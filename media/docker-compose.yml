@@ -44,7 +44,7 @@ services:
       - configradarr:/config
       - ${VIDEO_DIR}:/video
       - ${DOWNLOAD_DIR}:/downloads
-      - null:/movies:ro # keep things clean on the docker host
+      - nullvol:/movies:ro # keep things clean on the docker host
     restart: unless-stopped
 
   sonarr:
@@ -61,7 +61,7 @@ services:
     volumes:
       - configsonarr:/config
       - ${VIDEO_DIR}:/video
-      - null:/tv:ro # keep things clean on the docker host
+      - nullvol:/tv:ro # keep things clean on the docker host
       - ${DOWNLOAD_DIR}:/downloads
     restart: unless-stopped
 
@@ -96,8 +96,8 @@ services:
     volumes:
       - configbazarr:/config
       - ${VIDEO_DIR}:/video
-      - null:/tv:ro # keep things clean on the docker host
-      - null:/movies:ro # keep things clean on the docker host
+      - nullvol:/tv:ro # keep things clean on the docker host
+      - nullvol:/movies:ro # keep things clean on the docker host
     restart: unless-stopped
 
   # mylar:
@@ -193,4 +193,4 @@ volumes:
   configombi:
   configtautulli:
   logtautulli:
-  null:
+  nullvol:
