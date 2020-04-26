@@ -42,4 +42,4 @@ services:
 
 volumes:
   data:
-networks:
+# networks:
