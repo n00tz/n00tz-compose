@@ -1,3 +1,63 @@
 version: "3.7"
 services:
-  pterodactyl:
+  # pterodactyl:
+
+  minecraft_creative:
+    image: itzg/minecraft-bedrock-server:latest
+    container_name: bedrock-${MINECRAFT_SHORTNAME}-creative
+    environment:
+      - EULA=TRUE
+      - SERVERNAME=${MINECRAFT_SEVERNAME_CREATIVE}
+      - GAMEMODE=creative
+      - DIFFICULTY=easy
+      - LEVEL-TYPE=DEFAULT
+      - DEFAULT-PLAYER-PERMISSION-LEVEL=member
+      - MAX-PLAYERS=12
+      - LEVEL-NAME="creative_${MINECRAFT_SHORTNAME}"
+      - ONLINE-MODE=TRUE
+      - ALLOW-CHEATS=TRUE
+      - VIEW-DISTANCE=12
+      - PLAYER-IDLE-TIMEOUT=10
+      - MAX-THREADS=0
+      - TICK-DISTANCE=6
+      - TEXTUREPACK-REQUIRED=TRUE
+    ports:
+      - "19132:19132"
+      - "19132:19132/udp"
+    volumes:
+      - bedrockcreativedata:/data
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+  minecraft_flat:
+    image: itzg/minecraft-bedrock-server:latest
+    container_name: bedrock-${MINECRAFT_SHORTNAME}-flat
+    environment:
+      - EULA=TRUE
+      - SERVERNAME=${MINECRAFT_SEVERNAME_FLAT}
+      - GAMEMODE=creative
+      - DIFFICULTY=easy
+      - LEVEL_TYPE=flat
+      - DEFAULT_PLAYER_PERMISSION_LEVEL=member
+      - MAX_PLAYERS=12
+      - LEVEL_NAME="flat_${MINECRAFT_SHORTNAME}"
+      - ONLINE_MODE=true
+      - ALLOW_CHEATS=true
+      - VIEW_DISTANCE=12
+      - PLAYER_IDLE_TIMEOUT=10
+      - MAX_THREADS=0
+      - TICK_DISTANCE=6
+      - TEXTUREPACK_REQUIRED=true
+    ports:
+      - "19133:19132"
+      - "19133:19132/udp"
+    volumes:
+      - bedrockflatdata:/data
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
+volumes:
+  bedrockcreativedata:
+  bedrockflatdata:

@@ -40,7 +40,7 @@ Stack includes  images and configuration to provide and support audio and video 
 
 ## *HomeAutomation*
 
- - **Hass.Io**: *ON THE BACKLOG*
+ - **Hass.io**: *ON THE BACKLOG*
  - **NodeRed**: *ON THE BACKLOG*
  - **MQTT**: *ON THE BACKLOG*
  - **MDNS Repeater**: *ON THE BACKLOG*
