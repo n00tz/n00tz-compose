@@ -1,0 +1,349 @@
+version: "3.7"
+services:
+  plex:
+    image: plexinc/pms-docker:${PLEX_VERSION}
+    container_name: plex
+    hostname: ${HOSTNAME}
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+      - PLEX_CLAIM=${PLEX_CLAIM}
+      - ADVERTISE_IP=http://${PLEX_ADVERTISE_IP}:${PLEX_WEB_PORT}
+      - VERSION=${PLEX_VERSION}
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/nvidia0:/dev/nvidia0
+      - /dev/nvidiactl:/dev/nvidiactl
+      - /dev/nvidia-modeset:/dev/nvidia-modeset
+      - /dev/nvidia-uvm:/dev/nvidia-uvm
+      - /dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools
+    volumes:
+      - plexconfig:/config
+      - plextranscode:/transcode
+      - /storage/audio:/audio
+      - /storage/video:/video
+      - /storage/photo:/photo:ro
+    network_mode: host
+    restart: unless-stopped
+
+  # airsonic:
+
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    labels:
+      - traefik.enable=true
+      - traefik.port=${RADARR_PORT}
+      - traefik.frontend.rule=Host:${RADARR_HOSTNAME}
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${CONFIG_DIR}/radarr:/config
+      - ${VIDEO_DIR}:/video
+      - ${DOWNLOAD_DIR}:/downloads
+      - null:/movies:ro # keep things clean on the docker host
+    restart: unless-stopped
+
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    labels:
+      - traefik.enable=true
+      - traefik.port=${SONARR_PORT}
+      - traefik.frontend.rule=Host:${SONARR_HOSTNAME}
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${CONFIG_DIR}/sonarr:/config
+      - ${VIDEO_DIR}:/video
+      - null:/tv:ro # keep things clean on the docker host
+      - ${DOWNLOAD_DIR}:/downloads
+    restart: unless-stopped
+
+  lidarr:
+    image: linuxserver/lidarr
+    container_name: lidarr
+    labels:
+      - traefik.enable=true
+      - traefik.port=${LIDARR_PORT}
+      - traefik.frontend.rule=Host:${LIDARR_HOSTNAME}
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${CONFIG_DIR}/lidarr:/config
+      - ${AUDIO_DIR}/music:/music
+      - ${DOWNLOAD_DIR}:/downloads
+    restart: unless-stopped
+
+  bazarr:
+    image: linuxserver/bazarr
+    container_name: bazarr
+    labels:
+      - traefik.enable=true
+      - traefik.port=${BAZARR_PORT}
+      - traefik.frontend.rule=Host:${BAZARR_HOSTNAME}
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${CONFIG_DIR}/bazarr:/config
+      - ${VIDEO_DIR}:/video
+      - null:/tv:ro # keep things clean on the docker host
+      - null:/movies:ro # keep things clean on the docker host
+    restart: unless-stopped
+
+  # mylar:
+
+  # lazylibrarian:
+
+  jackett:
+    image: linuxserver/jackett
+    container_name: jackett
+    labels:
+      - traefik.enable=true
+      - traefik.port=${JACKETT_PORT}
+      - traefik.frontend.rule=Host:${JACKETT_HOSTNAME}
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${CONFIG_DIR}/jackett:/config
+      - ${DOWNLOAD_DIR}:/downloads
+    restart: unless-stopped
+
+  rutorrent:
+    image: linuxserver/rutorrent
+    container_name: rutorrent
+    labels:
+      - traefik.enable=true
+      - traefik.port=${RUTORRENT_WEB_PORT}
+      - traefik.frontend.rule=Host:${RUTORRENT_HOSTNAME}
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${CONFIG_DIR}/rutorrent:/config
+      - ${DOWNLOAD_DIR}:/downloads
+    ports:
+      - 5000:5000
+      - 51413:51413
+      - 6881:6881/udp
+    restart: unless-stopped
+
+  ombi:
+    image: linuxserver/ombi
+    container_name: ombi
+    labels:
+      - traefik.enable=true
+      - traefik.port=${OMBI_PORT}
+      - traefik.frontend.rule=Host:${OMBI_HOSTNAME}
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${CONFIG_DIR}/ombi:/config
+    depends_on:
+      - radarr
+      - sonarr
+      - lidarr
+      - rutorrent
+    restart: unless-stopped
+
+  tautulli:
+    image: linuxserver/tautulli
+    container_name: tautulli
+    labels:
+      - traefik.enable=true
+      - traefik.port=${TAUTULLI_PORT}
+      - traefik.frontend.rule=Host:${TAUTULLI_HOSTNAME}
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${CONFIG_DIR}/tautulli:/config
+      - ${LOG_DIR}/tautulli:/logs
+    restart: unless-stopped
+  
+
+
+volumes:
+  plexconfig:
+  plextranscode:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+# comment ${CONFIG_DIR} and ${LOG_DIR} out if using bind directories
+  ${CONFIG_DIR}:
+  ${LOG_DIR}:
+  null:
+
+
+
+
+
+
+  transmission:
+    image: ghostserverd/transmission-combustion
+    container_name: transmission
+    restart: always
+    ports:
+      - "${TRANS_WEBUI_PORT}:5656"
+      - "${TRANS_CONNECTION_PORT}:51413"
+      - "${TRANS_CONNECTION_PORT}:51413/udp"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+      - TRANS_WEBUI_USER=${TRANS_WEBUI_USER}
+      - TRANS_WEBUI_PASS=${TRANS_WEBUI_PASS}
+      - TRANS_WEBUI_PORT=${TRANS_WEBUI_PORT}
+      - TRANS_MAX_RETENTION=${TRANS_MAX_RETENTION}
+      - TRANS_MAX_RATIO=${TRANS_MAX_RATIO}
+      - TRANS_CONNECTION_PORT=${TRANS_CONNECTION_PORT}
+      - FILEBOT_PORT=${FILEBOT_PORT}
+    volumes:
+      - ${CONFIG_DIR}/transmission:/config
+      - ${DOWNLOAD_DIR}:/downloads
+      - ${MEDIA_DIR}:/media
+
+  filebot:
+    image: ghostserverd/filebot:4.9.x
+    container_name: filebot
+    restart: always
+    ports:
+      - "${FILEBOT_PORT}:${FILEBOT_PORT}"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+      - FILEBOT_PORT=${FILEBOT_PORT}
+      - FILEBOT_FORMAT=${FILEBOT_FORMAT}
+      - FILEBOT_ACTION=${FILEBOT_ACTION}
+      - FILEBOT_CONFLICT=${FILEBOT_CONFLICT}
+      - FILEBOT_SERIES_DB=${FILEBOT_SERIES_DB}
+      - FILEBOT_ANIME_DB=${FILEBOT_ANIME_DB}
+      - FILEBOT_MOVIE_DB=${FILEBOT_MOVIE_DB}
+      - FILEBOT_MUSIC_DB=${FILEBOT_MUSIC_DB}
+      - OPEN_SUB_USER=${OPEN_SUB_USER}
+      - OPEN_SUB_PASS=${OPEN_SUB_PASS}
+    volumes:
+      - ${CONFIG_DIR}/filebot:/config
+      - ${DOWNLOAD_DIR}:/downloads
+      - ${MEDIA_DIR}:/media
+      - ${BASE_DIR}:/share
+
+
+  sonarr:
+    image: ghostserverd/sonarr
+    container_name: sonarr
+    restart: always
+    ports:
+      - "${SONARR_PORT}:8989"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${CONFIG_DIR}/sonarr:/config
+      - ${DOWNLOAD_DIR}:/data/completed/tv/
+      - ${TV_DIR}:/tv
+
+  radarr:
+    image: ghostserverd/radarr
+    container_name: radarr
+    restart: always
+    ports:
+      - "${RADARR_PORT}:7878"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${CONFIG_DIR}/radarr:/config
+      - ${DOWNLOAD_DIR}:/data/completed/movies/
+      - ${MOVIES_DIR}:/movies
+
+  bazarr:
+    image: ghostserverd/bazarr
+    container_name: bazarr
+    restart: always
+    ports:
+      - "${BAZARR_PORT}:6767"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${CONFIG_DIR}/bazarr:/config
+      - ${TV_DIR}:/tv
+      - ${MOVIES_DIR}:/movies
+
+  jackett:
+    image: ghostserverd/jackett
+    container_name: jackett
+    restart: always
+    ports:
+      - "${JACKETT_PORT}:9117"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+      - JACKETT_KEY=0000
+    volumes:
+      - ${CONFIG_DIR}/jackett:/config
+      - ${CONFIG_DIR}/jackett/downloads:/downloads
+
+  plex:
+    image: ghostserverd/plex
+    container_name: plex
+    restart: always
+    ports:
+      - "${PLEX_WEB_PORT}:32400"
+      - "1900:1900"
+      - "3005:3005"
+      - "5353:5353"
+      - "8324:8324"
+      - "32410:32410"
+      - "32412:32412"
+      - "32413:32413"
+      - "32414:32414"
+      - "32469:32469"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+      - VERSION=latest
+      - PLUGIN_LIST=${PLUGIN_LIST}
+    volumes:
+      - ${CONFIG_DIR}/plex:/config
+      - ${MEDIA_DIR}:/data
+    devices:
+      - "/dev/dri/card0:/dev/dri/card0"
+      - "/dev/dri/renderD128:/dev/dri/renderD128"
+
+  tautulli:
+    image: ghostserverd/tautulli
+    container_name: tautulli
+    restart: always
+    ports:
+      - "${TAUTULLI_PORT}:8181"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${CONFIG_DIR}/tautulli:/config
+      - "${CONFIG_DIR}/plex/Library/Application Support/Plex Media Server/Logs:/logs:ro"
+

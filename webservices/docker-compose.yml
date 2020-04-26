@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  # yopass:
+
+  # heimdall:
+
+  # lychee:
+
+  # raneto:
+
+volumes:
+networks:
