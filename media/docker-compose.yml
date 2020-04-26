@@ -175,8 +175,6 @@ services:
       - configtautulli:/config
       - logtautulli:/logs
     restart: unless-stopped
-  
-
 
 volumes:
   plexconfig:

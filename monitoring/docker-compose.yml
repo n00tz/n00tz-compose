@@ -28,7 +28,7 @@ services:
       - traefik.port=${PORTAINER_PORT}
       - traefik.frontend.rule=Host:${PORTAINER_HOSTNAME}
     volumes:
-      - data_portainer:/data
+      - portainerdata:/data
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
     
@@ -41,4 +41,4 @@ services:
   # redis:
 
 volumes:
-  data_portainer:
+  portainerdata:
