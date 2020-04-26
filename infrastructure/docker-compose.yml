@@ -2,7 +2,10 @@ version: "3.7"
 services:
   traefik:
     image: traefik:alpine # The official Traefik docker image
-    command: --api --docker # Enables the web UI and tells Traefik to listen to docker
+    labels:
+      - traefik.frontend.rule=Host:${TRAEFIK_HOSTNAME}
+      - traefik.port=8080
+      - traefik.enable=true
     ports:
       - "80:80"     # The HTTP port
       - "8080:8080" # The Web UI (enabled by --api)
