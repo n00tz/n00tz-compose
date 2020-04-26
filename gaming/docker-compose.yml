@@ -7,7 +7,7 @@ services:
     container_name: bedrock-${MINECRAFT_SHORTNAME}-creative
     environment:
       - EULA=TRUE
-      - SERVERNAME=${MINECRAFT_SEVERNAME_CREATIVE}
+      - SERVERNAME=${MINECRAFT_SERVERNAME_CREATIVE}
       - GAMEMODE=creative
       - DIFFICULTY=easy
       - LEVEL-TYPE=DEFAULT
@@ -35,7 +35,7 @@ services:
     container_name: bedrock-${MINECRAFT_SHORTNAME}-flat
     environment:
       - EULA=TRUE
-      - SERVERNAME=${MINECRAFT_SEVERNAME_FLAT}
+      - SERVERNAME=${MINECRAFT_SERVERNAME_FLAT}
       - GAMEMODE=creative
       - DIFFICULTY=easy
       - LEVEL_TYPE=flat
