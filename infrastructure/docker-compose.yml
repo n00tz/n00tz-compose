@@ -9,6 +9,13 @@ services:
     ports:
       - "80:80"     # The HTTP port
       - "8080:8080" # The Web UI (enabled by --api)
+    networks:
+      - gaming_default
+      - homeautomation_default
+      - local
+      - media_default
+      - monitoring_default
+      - webservices_default
     volumes:
       - ./traefik/traefik.toml:/etc/traefik/traefik.toml
       - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
@@ -18,7 +25,13 @@ services:
     container_name: smtp
     ports:
       - "25:25"
-    network_mode: bridge
+    networks:
+      - gaming_default
+      - homeautomation_default
+      - local
+      - media_default
+      - monitoring_default
+      - webservices_default
     environment:
       - RELAY_NETWORKS= :10.0.0.0/8:172.16.0.0/12:192.168.0.0/16
       - MAILNAME=${SMTP_MAILNAME}
@@ -28,4 +41,15 @@ services:
   # redis:
 
 # volumes:
-# networks:
+networks:
+  local:
+  gaming_default:
+    external: true
+  homeautomation_default:
+    external: true
+  media_default:
+    external: true
+  monitoring_default:
+    external: true
+  webservices_default:
+    external: true

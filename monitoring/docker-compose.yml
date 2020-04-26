@@ -15,8 +15,6 @@ services:
       - PUID=${PUID}
       - PGID=${DOCKERGID}
       - TZ=${TIMEZONE}
-    networks:
-      - infrastructure_default
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -29,8 +27,6 @@ services:
       - traefik.enable=true
       - traefik.port=${PORTAINER_PORT}
       - traefik.frontend.rule=Host:${PORTAINER_HOSTNAME}
-    networks:
-      - infrastructure_default
     volumes:
       - data_portainer:/data
       - /var/run/docker.sock:/var/run/docker.sock
@@ -46,6 +42,3 @@ services:
 
 volumes:
   data_portainer:
-networks:
-  infrastructure_default:
-    external: true
