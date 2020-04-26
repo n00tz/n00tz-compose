@@ -1,9 +1,25 @@
 version: "3.7"
 services:
-  # traefik:
+  traefik:
+    image: traefik:alpine # The official Traefik docker image
+    command: --api --docker # Enables the web UI and tells Traefik to listen to docker
+    ports:
+      - "80:80"     # The HTTP port
+      - "8080:8080" # The Web UI (enabled by --api)
+    volumes:
+      - ./traefik/traefik.toml:/etc/traefik/traefik.toml
+      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
 
-  # smtp:
-
+  smtp:
+    build: ./smtp
+    container_name: smtp
+    ports:
+      - "25:25"
+    network_mode: bridge
+    environment:
+      - RELAY_NETWORKS= :10.0.0.0/8:172.16.0.0/12:192.168.0.0/16
+      - MAILNAME=${SMTP_MAILNAME}
+    restart: unless-stopped
   # mysql:
 
   # redis:
