@@ -41,7 +41,7 @@ services:
       - PGID=${PGID}
       - TZ=${TIMEZONE}
     volumes:
-      - ${CONFIG_DIR}/radarr:/config
+      - configradarr:/config
       - ${VIDEO_DIR}:/video
       - ${DOWNLOAD_DIR}:/downloads
       - null:/movies:ro # keep things clean on the docker host
@@ -59,7 +59,7 @@ services:
       - PGID=${PGID}
       - TZ=${TIMEZONE}
     volumes:
-      - ${CONFIG_DIR}/sonarr:/config
+      - configsonarr:/config
       - ${VIDEO_DIR}:/video
       - null:/tv:ro # keep things clean on the docker host
       - ${DOWNLOAD_DIR}:/downloads
@@ -77,7 +77,7 @@ services:
       - PGID=${PGID}
       - TZ=${TIMEZONE}
     volumes:
-      - ${CONFIG_DIR}/lidarr:/config
+      - configlidarr:/config
       - ${AUDIO_DIR}/music:/music
       - ${DOWNLOAD_DIR}:/downloads
     restart: unless-stopped
@@ -94,7 +94,7 @@ services:
       - PGID=${PGID}
       - TZ=${TIMEZONE}
     volumes:
-      - ${CONFIG_DIR}/bazarr:/config
+      - configbazarr:/config
       - ${VIDEO_DIR}:/video
       - null:/tv:ro # keep things clean on the docker host
       - null:/movies:ro # keep things clean on the docker host
@@ -116,7 +116,7 @@ services:
       - PGID=${PGID}
       - TZ=${TIMEZONE}
     volumes:
-      - ${CONFIG_DIR}/jackett:/config
+      - configjackett:/config
       - ${DOWNLOAD_DIR}:/downloads
     restart: unless-stopped
 
@@ -132,7 +132,7 @@ services:
       - PGID=${PGID}
       - TZ=${TIMEZONE}
     volumes:
-      - ${CONFIG_DIR}/rutorrent:/config
+      - configrutorrent:/config
       - ${DOWNLOAD_DIR}:/downloads
     ports:
       - 5000:5000
@@ -152,7 +152,7 @@ services:
       - PGID=${PGID}
       - TZ=${TIMEZONE}
     volumes:
-      - ${CONFIG_DIR}/ombi:/config
+      - configombi:/config
     depends_on:
       - radarr
       - sonarr
@@ -172,8 +172,8 @@ services:
       - PGID=${PGID}
       - TZ=${TIMEZONE}
     volumes:
-      - ${CONFIG_DIR}/tautulli:/config
-      - ${LOG_DIR}/tautulli:/logs
+      - configtautulli:/config
+      - logtautulli:/logs
     restart: unless-stopped
   
 
@@ -184,7 +184,13 @@ volumes:
     driver_opts:
       type: tmpfs
       device: tmpfs
-# comment ${CONFIG_DIR} and ${LOG_DIR} out if using bind directories
-  ${CONFIG_DIR}:
-  ${LOG_DIR}:
+  configradarr:
+  configsonarr:
+  configlidarr:
+  configbazarr:
+  configjackett:
+  configrutorrent:
+  configombi:
+  configtautulli:
+  logtautulli:
   null:
