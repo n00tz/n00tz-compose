@@ -20,7 +20,17 @@ services:
       - /sys:/host/sys:ro
       - /var/run/docker.sock:/var/run/docker.sock:rw
 
-  # portainer:
+  portainer:
+    image: portainer/portainer
+    container_name: portainer
+    labels:
+      - traefik.enable=true
+      - traefik.port=${PORTAINER_PORT}
+      - traefik.frontend.rule=Host:${PORTAINER_HOSTNAME}
+    volumes:
+      - data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
     
   # grafana:
 
