@@ -4,12 +4,12 @@ services:
     image: traefik:chevrotin
     container_name: traefik
     labels:
-      - traefik.frontend.rule=Host:${TRAEFIK_HOSTNAME}
-      - traefik.port=8080
       - traefik.enable=true
+      - traefik.frontend.rule=Host:${TRAEFIK_HOSTNAME}
+      - traefik.http.routers.traefik.entrypoints=web
+      - traefik.http.routers.traefik.service=api@internal
     ports:
       - "80:80"     # The HTTP port
-      - "8080:8080" # The Web UI (enabled by --api)
       - "443:443"   # TLS/SSL enable port
     networks:
       - gaming_default
