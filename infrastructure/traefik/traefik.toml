@@ -21,3 +21,4 @@
 [providers.docker]
   endpoint = "unix:///var/run/docker.sock"
   exposedByDefault = false
+  defaultRule = 'Host(`{{ index .Labels "com.docker.compose.service" }}.localhost`)'
