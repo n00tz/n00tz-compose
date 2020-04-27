@@ -1,6 +1,18 @@
 version: "3.7"
 services:
-  # yopass:
+  yopass-memcached:
+    image: memcached
+    container_name: yopass-memcached
+    restart: unless-stopped
+  yopass:
+    image: jhaals/yopass
+    container_name: yopass
+    command: "--memcached=yopass-memcached:11211"
+    labels:
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:${TRAEFIK_HOSTNAME}
+      - traefik.port=${TRAEFIK_PORT}
+    restart: unless-stopped
 
   # heimdall:
 
@@ -10,5 +22,5 @@ services:
 
   # jekyll:
 
-volumes:
-networks:
+# volumes:
+# networks:

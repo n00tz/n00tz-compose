@@ -2,6 +2,7 @@ version: "3.7"
 services:
   traefik:
     image: traefik:alpine # The official Traefik docker image
+    container_name: traefik
     labels:
       - traefik.frontend.rule=Host:${TRAEFIK_HOSTNAME}
       - traefik.port=8080
@@ -11,7 +12,7 @@ services:
       - "8080:8080" # The Web UI (enabled by --api)
     networks:
       - gaming_default
-      - homeautomation_default
+      # - homeautomation_default
       - local
       - media_default
       - monitoring_default
@@ -27,7 +28,7 @@ services:
       - "25:25"
     networks:
       - gaming_default
-      - homeautomation_default
+      # - homeautomation_default
       - local
       - media_default
       - monitoring_default
