@@ -13,6 +13,7 @@
 
 [api]
   dashboard = true
+  insecure = true
 
 [ping]
   entryPoint = "traefik"
