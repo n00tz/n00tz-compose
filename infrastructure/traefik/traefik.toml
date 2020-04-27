@@ -1,17 +1,22 @@
-defaultEntryPoints = ["http"]
-logLevel = "INFO"
+[global]
+  checkNewVersion = true
+  sendAnonymousUsage = false
 
-[docker]
-  endpoint = "unix:///var/run/docker.sock"
-  exposedByDefault = false
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+
+  [entryPoints.websecure]
+    address = ":443"
+
+[log]
 
 [api]
   dashboard = true
-  entrypoint = "dashboard"
 
-[entryPoints]
-  [entryPoints.http]
-  address = ":80"
+[ping]
+  entryPoint = "traefik"
 
-  [entryPoints.dashboard]
-  address = ":8080"
+[providers.docker]
+  endpoint = "unix:///var/run/docker.sock"
+  exposedByDefault = false

@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   traefik:
-    image: traefik:alpine # The official Traefik docker image
+    image: traefik:chevrotin
     container_name: traefik
     labels:
       - traefik.frontend.rule=Host:${TRAEFIK_HOSTNAME}
@@ -10,6 +10,7 @@ services:
     ports:
       - "80:80"     # The HTTP port
       - "8080:8080" # The Web UI (enabled by --api)
+      - "443:443"   # TLS/SSL enable port
     networks:
       - gaming_default
       # - homeautomation_default
@@ -19,6 +20,7 @@ services:
       - webservices_default
     volumes:
       - ./traefik/traefik.toml:/etc/traefik/traefik.toml
+      - certs:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
 
   smtp:
@@ -41,7 +43,8 @@ services:
 
   # redis:
 
-# volumes:
+volumes:
+  certs:
 networks:
   local:
   gaming_default:
