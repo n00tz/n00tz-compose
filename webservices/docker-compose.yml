@@ -9,9 +9,17 @@ services:
     container_name: yopass
     command: "--memcached=yopass-memcached:11211"
     labels:
-      - traefik.enable=true
-      - traefik.frontend.rule=Host:${TRAEFIK_HOSTNAME}
-      - traefik.port=${TRAEFIK_PORT}
+      traefik.enable: true
+      traefik.http.routers.yopass.entrypoints: http
+      traefik.http.routers.yopass.rule: Host(${YOPASS_HOSTNAME})
+      traefik.http.middlewares.yopass-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.yopass.middlewares: yopass-https-redirect
+      traefik.http.routers.yopass-secure.entrypoints: https
+      traefik.http.routers.yopass-secure.rule: Host(${YOPASS_HOSTNAME})
+      traefik.http.routers.yopass-secure.tls: true
+      traefik.http.routers.yopass-secure.tls.certresolver: http
+      traefik.http.routers.yopass-secure.service: yopass
+      traefik.http.services.yopass.loadbalancer.server.port: 1337
     restart: unless-stopped
 
   # heimdall:

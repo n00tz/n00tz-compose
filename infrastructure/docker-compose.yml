@@ -4,10 +4,18 @@ services:
     image: traefik:chevrotin
     container_name: traefik
     labels:
-      - traefik.enable=true
-      - traefik.frontend.rule=Host:${TRAEFIK_HOSTNAME}
-      - traefik.http.routers.traefik.entrypoints=web
-      - traefik.http.routers.traefik.service=api@internal
+      traefik.enable: true
+      traefik.http.routers.traefik.entrypoints: http
+      traefik.http.routers.traefik.rule: Host(${TRAEFIK_HOSTNAMES})
+      traefik.http.middlewares.traefik-auth.basicauth.users: ${TRAEFIK_AUTHS}
+      traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.traefik.middlewares: traefik-https-redirect
+      traefik.http.routers.traefik-secure.entrypoints: https
+      traefik.http.routers.traefik-secure.rule: Host(${TRAEFIK_HOSTNAMES})
+      traefik.http.routers.traefik-secure.middlewares: traefik-auth
+      traefik.http.routers.traefik-secure.tls: true
+      traefik.http.routers.traefik-secure.tls.certresolver: http
+      traefik.http.routers.traefik-secure.service: api@internal
     ports:
       - "80:80"     # The HTTP port
       - "443:443"   # TLS/SSL enable port
