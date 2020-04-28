@@ -10,8 +10,8 @@ Organized into multiple stacks depending on the needs of the user.
 
 Stack includes images and configuration to support shared usability and connectivity of software in all stacks.
 
- - **Traefik**: *COMING SOON* Web Application Proxying, Load-Balancing, and SSL Offloading.
- - **SMTP**: *COMING SOON* Simple Mail Transport Protocol
+ - **Traefik**: Web Application Proxying, Load-Balancing, and SSL Offloading.
+ - **SMTP**: Simple Mail Transport Protocol
  - **MySQL**: *COMING SOON* Relational DataBase Management System - Open-Source Software Flavored.
  - **MSSQL**: *COMING SOON* Relational DataBase Management System - Microsoft Flavored.
  - **Redis**: *COMING SOON* In-memory data structure store, cache, message broker.
@@ -35,7 +35,7 @@ Stack includes  images and configuration to provide and support audio and video 
 
 ## *Gaming*
 
- - **Minecraft-Bedrock**: *COMING SOON* Minecraft Bedrock Server.
+ - **Minecraft-Bedrock**: Minecraft Bedrock Server. Basic setup right now.
  - **Pterodactyl**: *ON THE BACKLOG*
 
 ## *HomeAutomation*
@@ -49,8 +49,8 @@ Stack includes  images and configuration to provide and support audio and video 
 
 Stack includes images and configuration to provide monitoring and alerting services.
 
- - **NetData**: *COMING SOON*
- - **Portainer**: *COMING SOON*
+ - **NetData**: Powerful Host Metrics, Monitoring, and so much more. [Netdata Infographic](https://my-netdata.io/infographic.html)
+ - **Portainer**: Dashboard for container vision and control. [Portainer Website](https://www.portainer.io/overview/)
  - **Varken**: *ON THE BACKLOG* May move to Media Stack.
  - **Grafana**: *COMING SOON*
  - **Prometheus**: *COMING SOON*
@@ -61,7 +61,7 @@ Stack includes images and configuration to provide monitoring and alerting servi
 
 Stack includes tools, applications, and APIs to provide adequate, effective, and pertinent communication or productivity.
 
- - **yopass**: *COMING SOON*
+ - **yopass**: Killer tool for sharing passwords securely. [github/jhaals](https://github.com/jhaals/yopass) [LIVE VERSION](https://yopass.se)
  - **rstudio**: *COMING SOON*
  - **heimdall**: *ON THE BACKLOG*
  - **lychee**: *ON THE BACKLOG*
@@ -70,4 +70,4 @@ Stack includes tools, applications, and APIs to provide adequate, effective, and
 
 # Usage
 
-__.env-sample__ files will need to be renamed to **.env** and customized to fit your environment.
+__.env-sample__ files in each stack directory will need to be renamed to **.env** and customized to fit your environment.
