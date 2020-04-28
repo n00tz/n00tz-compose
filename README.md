@@ -62,11 +62,14 @@ Stack includes images and configuration to provide monitoring and alerting servi
 Stack includes tools, applications, and APIs to provide adequate, effective, and pertinent communication or productivity.
 
  - **yopass**: Killer tool for sharing passwords securely. [github/jhaals](https://github.com/jhaals/yopass) [LIVE VERSION](https://yopass.se)
+ - **privatebin**: *ON THE BACKLOG*
+ - **projectsend**: *ON THE BACKLOG*
  - **rstudio**: *COMING SOON*
  - **codimd**: *ON THE BACKLOG*
  - **heimdall**: *ON THE BACKLOG*
  - **lychee**: *ON THE BACKLOG*
  - **raneto**: *ON THE BACKLOG*
+ - **librespeed**: *ON THE BACKLOG*
 
 
 # Usage
