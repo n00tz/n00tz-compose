@@ -14,13 +14,13 @@ services:
       - VERSION=${PLEX_VERSION}
       - NVIDIA_VISIBLE_DEVICES=all
       - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
-    # devices:
-      # - /dev/dri:/dev/dri
-      # - /dev/nvidia0:/dev/nvidia0
-      # - /dev/nvidiactl:/dev/nvidiactl
-      # - /dev/nvidia-modeset:/dev/nvidia-modeset
-      # - /dev/nvidia-uvm:/dev/nvidia-uvm
-      # - /dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/nvidia0:/dev/nvidia0
+      - /dev/nvidiactl:/dev/nvidiactl
+      - /dev/nvidia-modeset:/dev/nvidia-modeset
+      - /dev/nvidia-uvm:/dev/nvidia-uvm
+      - /dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools
     volumes:
       - plexconfig:/config
       - plextranscode:/transcode
