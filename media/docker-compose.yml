@@ -54,6 +54,9 @@ services:
       - ${VIDEO_DIR}:/video
       - ${DOWNLOAD_DIR}:/downloads
       - nullvol:/movies:ro # keep things clean on the docker host
+    depends_on:
+      - rutorrent
+      - jackett
     restart: unless-stopped
 
   sonarr:
@@ -79,6 +82,9 @@ services:
       - ${VIDEO_DIR}:/video
       - nullvol:/tv:ro # keep things clean on the docker host
       - ${DOWNLOAD_DIR}:/downloads
+    depends_on:
+      - rutorrent
+      - jackett
     restart: unless-stopped
 
   lidarr:
@@ -103,6 +109,9 @@ services:
       - configlidarr:/config
       - ${AUDIO_DIR}/music:/music
       - ${DOWNLOAD_DIR}:/downloads
+    depends_on:
+      - rutorrent
+      - jackett
     restart: unless-stopped
 
   bazarr:
@@ -128,6 +137,9 @@ services:
       - ${VIDEO_DIR}:/video
       - nullvol:/tv:ro # keep things clean on the docker host
       - nullvol:/movies:ro # keep things clean on the docker host
+    depends_on:
+      - radarr
+      - sonarr
     restart: unless-stopped
 
   # mylar:
@@ -208,7 +220,6 @@ services:
       - radarr
       - sonarr
       - lidarr
-      - rutorrent
     restart: unless-stopped
 
   tautulli:
@@ -232,6 +243,8 @@ services:
     volumes:
       - configtautulli:/config
       - logtautulli:/logs
+    depends_on:
+      - plex
     restart: unless-stopped
 
 volumes:
