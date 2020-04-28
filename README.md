@@ -63,6 +63,7 @@ Stack includes tools, applications, and APIs to provide adequate, effective, and
 
  - **yopass**: Killer tool for sharing passwords securely. [github/jhaals](https://github.com/jhaals/yopass) [LIVE VERSION](https://yopass.se)
  - **rstudio**: *COMING SOON*
+ - **codimd**: *ON THE BACKLOG*
  - **heimdall**: *ON THE BACKLOG*
  - **lychee**: *ON THE BACKLOG*
  - **raneto**: *ON THE BACKLOG*
