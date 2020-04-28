@@ -4,7 +4,7 @@ services:
     image: plexinc/pms-docker:${PLEX_VERSION}
     container_name: plex
     hostname: ${HOSTNAME}
-    runtime: nvidia
+    # runtime: nvidia
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -13,13 +13,13 @@ services:
       - ADVERTISE_IP=http://${PLEX_ADVERTISE_IP}:${PLEX_WEB_PORT}
       - VERSION=${PLEX_VERSION}
       - NVIDIA_VISIBLE_DEVICES=all
-    # devices:
-    #   - /dev/dri:/dev/dri
-    #   - /dev/nvidia0:/dev/nvidia0
-    #   - /dev/nvidiactl:/dev/nvidiactl
-    #   - /dev/nvidia-modeset:/dev/nvidia-modeset
-    #   - /dev/nvidia-uvm:/dev/nvidia-uvm
-    #   - /dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools
+    devices:
+      # - /dev/dri:/dev/dri
+      - /dev/nvidia0:/dev/nvidia0
+      - /dev/nvidiactl:/dev/nvidiactl
+      - /dev/nvidia-modeset:/dev/nvidia-modeset
+      - /dev/nvidia-uvm:/dev/nvidia-uvm
+      - /dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools
     volumes:
       - plexconfig:/config
       - plextranscode:/transcode
