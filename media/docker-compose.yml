@@ -4,6 +4,7 @@ services:
     image: plexinc/pms-docker:${PLEX_VERSION}
     container_name: plex
     hostname: ${HOSTNAME}
+    runtime: nvidia
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -11,13 +12,14 @@ services:
       - PLEX_CLAIM=${PLEX_CLAIM}
       - ADVERTISE_IP=http://${PLEX_ADVERTISE_IP}:${PLEX_WEB_PORT}
       - VERSION=${PLEX_VERSION}
-    devices:
-      - /dev/dri:/dev/dri
-      - /dev/nvidia0:/dev/nvidia0
-      - /dev/nvidiactl:/dev/nvidiactl
-      - /dev/nvidia-modeset:/dev/nvidia-modeset
-      - /dev/nvidia-uvm:/dev/nvidia-uvm
-      - /dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools
+      - NVIDIA_VISIBLE_DEVICES=all
+    # devices:
+    #   - /dev/dri:/dev/dri
+    #   - /dev/nvidia0:/dev/nvidia0
+    #   - /dev/nvidiactl:/dev/nvidiactl
+    #   - /dev/nvidia-modeset:/dev/nvidia-modeset
+    #   - /dev/nvidia-uvm:/dev/nvidia-uvm
+    #   - /dev/nvidia-uvm-tools:/dev/nvidia-uvm-tools
     volumes:
       - plexconfig:/config
       - plextranscode:/transcode
@@ -33,9 +35,16 @@ services:
     image: linuxserver/radarr
     container_name: radarr
     labels:
-      - traefik.enable=true
-      - traefik.port=${RADARR_PORT}
-      - traefik.frontend.rule=Host:${RADARR_HOSTNAME}
+      - "traefik.enable=true"
+      - "traefik.http.routers.radarr.entrypoints=http"
+      - "traefik.http.routers.radarr.rule=Host(${RADARR_HOSTNAMES})"
+      - "traefik.http.routers.radarr.middlewares=https-redirect@file"
+      - "traefik.http.routers.radarr-secure.entrypoints=https"
+      - "traefik.http.routers.radarr-secure.rule=Host(${RADARR_HOSTNAMES})"
+      - "traefik.http.routers.radarr-secure.tls=true"
+      - "traefik.http.routers.radarr-secure.tls.certresolver=http"
+      - "traefik.http.routers.radarr-secure.service=radarr"
+      - "traefik.http.services.radarr.loadbalancer.server.port=${RADARR_PORT}"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -51,9 +60,16 @@ services:
     image: linuxserver/sonarr
     container_name: sonarr
     labels:
-      - traefik.enable=true
-      - traefik.port=${SONARR_PORT}
-      - traefik.frontend.rule=Host:${SONARR_HOSTNAME}
+      - "traefik.enable=true"
+      - "traefik.http.routers.sonarr.entrypoints=http"
+      - "traefik.http.routers.sonarr.rule=Host(${SONARR_HOSTNAMES})"
+      - "traefik.http.routers.sonarr.middlewares=https-redirect@file"
+      - "traefik.http.routers.sonarr-secure.entrypoints=https"
+      - "traefik.http.routers.sonarr-secure.rule=Host(${SONARR_HOSTNAMES})"
+      - "traefik.http.routers.sonarr-secure.tls=true"
+      - "traefik.http.routers.sonarr-secure.tls.certresolver=http"
+      - "traefik.http.routers.sonarr-secure.service=sonarr"
+      - "traefik.http.services.sonarr.loadbalancer.server.port=${SONARR_PORT}"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -69,9 +85,16 @@ services:
     image: linuxserver/lidarr
     container_name: lidarr
     labels:
-      - traefik.enable=true
-      - traefik.port=${LIDARR_PORT}
-      - traefik.frontend.rule=Host:${LIDARR_HOSTNAME}
+      - "traefik.enable=true"
+      - "traefik.http.routers.lidarr.entrypoints=http"
+      - "traefik.http.routers.lidarr.rule=Host(${LIDARR_HOSTNAMES})"
+      - "traefik.http.routers.lidarr.middlewares=https-redirect@file"
+      - "traefik.http.routers.lidarr-secure.entrypoints=https"
+      - "traefik.http.routers.lidarr-secure.rule=Host(${LIDARR_HOSTNAMES})"
+      - "traefik.http.routers.lidarr-secure.tls=true"
+      - "traefik.http.routers.lidarr-secure.tls.certresolver=http"
+      - "traefik.http.routers.lidarr-secure.service=lidarr"
+      - "traefik.http.services.lidarr.loadbalancer.server.port=${LIDARR_PORT}"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -86,9 +109,16 @@ services:
     image: linuxserver/bazarr
     container_name: bazarr
     labels:
-      - traefik.enable=true
-      - traefik.port=${BAZARR_PORT}
-      - traefik.frontend.rule=Host:${BAZARR_HOSTNAME}
+      - "traefik.enable=true"
+      - "traefik.http.routers.bazarr.entrypoints=http"
+      - "traefik.http.routers.bazarr.rule=Host(${BAZARR_HOSTNAMES})"
+      - "traefik.http.routers.bazarr.middlewares=https-redirect@file"
+      - "traefik.http.routers.bazarr-secure.entrypoints=https"
+      - "traefik.http.routers.bazarr-secure.rule=Host(${BAZARR_HOSTNAMES})"
+      - "traefik.http.routers.bazarr-secure.tls=true"
+      - "traefik.http.routers.bazarr-secure.tls.certresolver=http"
+      - "traefik.http.routers.bazarr-secure.service=bazarr"
+      - "traefik.http.services.bazarr.loadbalancer.server.port=${BAZARR_PORT}"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -108,9 +138,16 @@ services:
     image: linuxserver/jackett
     container_name: jackett
     labels:
-      - traefik.enable=true
-      - traefik.port=${JACKETT_PORT}
-      - traefik.frontend.rule=Host:${JACKETT_HOSTNAME}
+      - "traefik.enable=true"
+      - "traefik.http.routers.jackett.entrypoints=http"
+      - "traefik.http.routers.jackett.rule=Host(${JACKETT_HOSTNAMES})"
+      - "traefik.http.routers.jackett.middlewares=https-redirect@file"
+      - "traefik.http.routers.jackett-secure.entrypoints=https"
+      - "traefik.http.routers.jackett-secure.rule=Host(${JACKETT_HOSTNAMES})"
+      - "traefik.http.routers.jackett-secure.tls=true"
+      - "traefik.http.routers.jackett-secure.tls.certresolver=http"
+      - "traefik.http.routers.jackett-secure.service=jackett"
+      - "traefik.http.services.jackett.loadbalancer.server.port=${JACKETT_PORT}"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -124,9 +161,16 @@ services:
     image: linuxserver/rutorrent
     container_name: rutorrent
     labels:
-      - traefik.enable=true
-      - traefik.port=${RUTORRENT_WEB_PORT}
-      - traefik.frontend.rule=Host:${RUTORRENT_HOSTNAME}
+      - "traefik.enable=true"
+      - "traefik.http.routers.rutorrent.entrypoints=http"
+      - "traefik.http.routers.rutorrent.rule=Host(${RUTORRENT_HOSTNAMES})"
+      - "traefik.http.routers.rutorrent.middlewares=https-redirect@file"
+      - "traefik.http.routers.rutorrent-secure.entrypoints=https"
+      - "traefik.http.routers.rutorrent-secure.rule=Host(${RUTORRENT_HOSTNAMES})"
+      - "traefik.http.routers.rutorrent-secure.tls=true"
+      - "traefik.http.routers.rutorrent-secure.tls.certresolver=http"
+      - "traefik.http.routers.rutorrent-secure.service=rutorrent"
+      - "traefik.http.services.rutorrent.loadbalancer.server.port=${RUTORRENT_WEB_PORT}"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -144,9 +188,16 @@ services:
     image: linuxserver/ombi
     container_name: ombi
     labels:
-      - traefik.enable=true
-      - traefik.port=${OMBI_PORT}
-      - traefik.frontend.rule=Host:${OMBI_HOSTNAME}
+      - "traefik.enable=true"
+      - "traefik.http.routers.ombi.entrypoints=http"
+      - "traefik.http.routers.ombi.rule=Host(${OMBI_HOSTNAMES})"
+      - "traefik.http.routers.ombi.middlewares=https-redirect@file"
+      - "traefik.http.routers.ombi-secure.entrypoints=https"
+      - "traefik.http.routers.ombi-secure.rule=Host(${OMBI_HOSTNAMES})"
+      - "traefik.http.routers.ombi-secure.tls=true"
+      - "traefik.http.routers.ombi-secure.tls.certresolver=http"
+      - "traefik.http.routers.ombi-secure.service=ombi"
+      - "traefik.http.services.ombi.loadbalancer.server.port=${OMBI_PORT}"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -164,9 +215,16 @@ services:
     image: linuxserver/tautulli
     container_name: tautulli
     labels:
-      - traefik.enable=true
-      - traefik.port=${TAUTULLI_PORT}
-      - traefik.frontend.rule=Host:${TAUTULLI_HOSTNAME}
+      - "traefik.enable=true"
+      - "traefik.http.routers.tautulli.entrypoints=http"
+      - "traefik.http.routers.tautulli.rule=Host(${TAUTULLI_HOSTNAMES})"
+      - "traefik.http.routers.tautulli.middlewares=https-redirect@file"
+      - "traefik.http.routers.tautulli-secure.entrypoints=https"
+      - "traefik.http.routers.tautulli-secure.rule=Host(${TAUTULLI_HOSTNAMES})"
+      - "traefik.http.routers.tautulli-secure.tls=true"
+      - "traefik.http.routers.tautulli-secure.tls.certresolver=http"
+      - "traefik.http.routers.tautulli-secure.service=tautulli"
+      - "traefik.http.services.tautulli.loadbalancer.server.port=${TAUTULLI_PORT}"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

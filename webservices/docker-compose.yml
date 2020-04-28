@@ -18,7 +18,7 @@ services:
       - "traefik.http.routers.yopass-secure.tls=true"
       - "traefik.http.routers.yopass-secure.tls.certresolver=http"
       - "traefik.http.routers.yopass-secure.service=yopass"
-      - "traefik.http.services.yopass.loadbalancer.server.port=1337"
+      - "traefik.http.services.yopass.loadbalancer.server.port=${YOPASS_PORT}"
     restart: unless-stopped
 
   # heimdall:
