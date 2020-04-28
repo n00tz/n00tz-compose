@@ -9,16 +9,16 @@ services:
     container_name: yopass
     command: "--memcached=yopass-memcached:11211"
     labels:
-      traefik.enable: true
-      traefik.http.routers.yopass.entrypoints: http
-      traefik.http.routers.yopass.rule: Host(${YOPASS_HOSTNAME})
-      traefik.http.routers.yopass.middlewares: https-redirect@file
-      traefik.http.routers.yopass-secure.entrypoints: https
-      traefik.http.routers.yopass-secure.rule: Host(${YOPASS_HOSTNAME})
-      traefik.http.routers.yopass-secure.tls: true
-      traefik.http.routers.yopass-secure.tls.certresolver: http
-      traefik.http.routers.yopass-secure.service: yopass
-      traefik.http.services.yopass.loadbalancer.server.port: 1337
+      - "traefik.enable=true"
+      - "traefik.http.routers.yopass.entrypoints=http"
+      - "traefik.http.routers.yopass.rule=Host(${YOPASS_HOSTNAME})"
+      - "traefik.http.routers.yopass.middlewares=https-redirect@file"
+      - "traefik.http.routers.yopass-secure.entrypoints=https"
+      - "traefik.http.routers.yopass-secure.rule=Host(${YOPASS_HOSTNAME})"
+      - "traefik.http.routers.yopass-secure.tls=true"
+      - "traefik.http.routers.yopass-secure.tls.certresolver=http"
+      - "traefik.http.routers.yopass-secure.service=yopass"
+      - "traefik.http.services.yopass.loadbalancer.server.port=1337"
     restart: unless-stopped
 
   # heimdall:

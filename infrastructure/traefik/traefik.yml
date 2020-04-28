@@ -1,23 +1,22 @@
 api:
   dashboard: true
   
-  entryPoints:
-    http:
-      address: ":80"
-    https:
-      address: ":443"
+entryPoints:
+  http:
+    address: ":80"
+  https:
+    address: ":443"
   
-  providers:
-    docker:
-      endpoint: "unix:///var/run/docker.sock"
-      exposedByDefault: false
-    file:
-      filename: /config.yml
+providers:
+  docker:
+    endpoint: "unix:///var/run/docker.sock"
+    exposedByDefault: false
+  file:
+    filename: /config.yml
   
-  certificatesResolvers:
-    http:
-      acme:
-        email: email@example.com
-        storage: /letsencrypt/acme.json
-        httpChallenge:
-          entryPoint: http
+certificatesResolvers:
+  http:
+    acme:
+      storage: /letsencrypt/acme.json
+      httpChallenge:
+        entryPoint: http
