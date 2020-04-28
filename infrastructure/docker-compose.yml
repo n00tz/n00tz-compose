@@ -27,9 +27,11 @@ services:
       - monitoring_default
       - webservices_default
     volumes:
-      - ./traefik/traefik.toml:/etc/traefik/traefik.toml
+      - /etc/localtime:/etc/localtime:ro
+      - ./traefik/traefik.yml:/traefik.yml:ro
+      - ./traefik/config.yml:/config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro # So that Traefik can listen to the Docker events
       - certs:/letsencrypt
-      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
 
   smtp:
     build: ./smtp
