@@ -35,6 +35,8 @@ services:
   radarr:
     image: linuxserver/radarr
     container_name: radarr
+    networks:
+      - infrastructure_local
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.radarr.entrypoints=http"
@@ -63,6 +65,8 @@ services:
   sonarr:
     image: linuxserver/sonarr
     container_name: sonarr
+    networks:
+      - infrastructure_local
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.sonarr.entrypoints=http"
@@ -91,6 +95,8 @@ services:
   lidarr:
     image: linuxserver/lidarr
     container_name: lidarr
+    networks:
+      - infrastructure_local
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.lidarr.entrypoints=http"
@@ -118,6 +124,8 @@ services:
   bazarr:
     image: linuxserver/bazarr
     container_name: bazarr
+    networks:
+      - infrastructure_local
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.bazarr.entrypoints=http"
@@ -150,6 +158,8 @@ services:
   jackett:
     image: linuxserver/jackett
     container_name: jackett
+    networks:
+      - infrastructure_local
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.jackett.entrypoints=http"
@@ -173,6 +183,8 @@ services:
   rutorrent:
     image: linuxserver/rutorrent
     container_name: rutorrent
+    networks:
+      - infrastructure_local
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.rutorrent.entrypoints=http"
@@ -200,6 +212,8 @@ services:
   ombi:
     image: linuxserver/ombi
     container_name: ombi
+    networks:
+      - infrastructure_local
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.ombi.entrypoints=http"
@@ -226,6 +240,8 @@ services:
   tautulli:
     image: linuxserver/tautulli
     container_name: tautulli
+    networks:
+      - infrastructure_local
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.tautulli.entrypoints=http"
@@ -254,6 +270,8 @@ volumes:
     driver_opts:
       type: tmpfs
       device: tmpfs
+      tmpfs:
+        size: 8589934592
   configradarr:
   configsonarr:
   configlidarr:
@@ -264,3 +282,7 @@ volumes:
   configtautulli:
   logtautulli:
   nullvol:
+
+networks:
+  infrastructure_local:
+    external: true

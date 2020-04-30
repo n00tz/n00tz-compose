@@ -1,13 +1,15 @@
 version: "3.7"
 services:
-  mqtt:
+  # mqtt:
   
-  mdns_repeater:
+  # mdns_repeater:
 
-  hassio:
+  # hassio:
 
-  nodered:
+  # nodered:
 
 volumes:
 
 networks:
+  infrastructure_local:
+    external: true

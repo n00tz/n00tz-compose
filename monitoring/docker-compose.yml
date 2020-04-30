@@ -3,6 +3,8 @@ services:
   netdata:
     image: netdata/netdata
     container_name: netdata
+    networks:
+      - infrastructure_local
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.netdata.entrypoints=http"
@@ -30,6 +32,8 @@ services:
   portainer:
     image: portainer/portainer
     container_name: portainer
+    networks:
+      - infrastructure_local
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.portainer.entrypoints=http"
@@ -56,3 +60,7 @@ services:
 
 volumes:
   portainerdata:
+
+networks:
+  infrastructure_local:
+    external: true

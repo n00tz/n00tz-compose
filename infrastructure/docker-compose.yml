@@ -50,7 +50,16 @@ services:
       - RELAY_NETWORKS= :10.0.0.0/8:172.16.0.0/12:192.168.0.0/16
       - MAILNAME=${SMTP_MAILNAME}
     restart: unless-stopped
+  
+  # gitea:
+
+  # drone:
+  
+  # ansible
+  
   # mysql:
+
+  # mssql:
 
   # redis:
 
@@ -58,13 +67,3 @@ volumes:
   certs:
 networks:
   local:
-  gaming_default:
-    external: true
-  homeautomation_default:
-    external: true
-  media_default:
-    external: true
-  monitoring_default:
-    external: true
-  webservices_default:
-    external: true

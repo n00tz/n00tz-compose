@@ -8,6 +8,8 @@ services:
     image: jhaals/yopass
     container_name: yopass
     command: "--memcached=yopass-memcached:11211"
+    networks:
+      - infrastructure_local
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.yopass.entrypoints=http"
@@ -19,17 +21,49 @@ services:
       - "traefik.http.routers.yopass-secure.tls.certresolver=http"
       - "traefik.http.routers.yopass-secure.service=yopass"
       - "traefik.http.services.yopass.loadbalancer.server.port=${YOPASS_PORT}"
+    depends_on:
+      - yopass-memcached
     restart: unless-stopped
+
+  privatebin:
+    image: privatebin/nginx-fpm-alpine
+    container_name: privatebin
+    volumes:
+      - privatebindata:/srv/data
+    networks:
+      - infrastructure_local
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.privatebin.entrypoints=http"
+      - "traefik.http.routers.privatebin.rule=Host(${PRIVATEBIN_HOSTNAMES})"
+      - "traefik.http.routers.privatebin.middlewares=https-redirect@file"
+      - "traefik.http.routers.privatebin-secure.entrypoints=https"
+      - "traefik.http.routers.privatebin-secure.rule=Host(${PRIVATEBIN_HOSTNAMES})"
+      - "traefik.http.routers.privatebin-secure.tls=true"
+      - "traefik.http.routers.privatebin-secure.tls.certresolver=http"
+      - "traefik.http.routers.privatebin-secure.service=privatebin"
+      - "traefik.http.services.privatebin.loadbalancer.server.port=${PRIVATEBIN_PORT}"
+    restart: unless-stopped
+    
+  # projectsend:
+
+  # rstudio:
+
+  # codimd:
 
   # heimdall:
 
   # lychee:
 
-  # codimd:
-
   # raneto:
 
-  # jekyll:
+  # librespeed:
 
-# volumes:
-# networks:
+  # bigbluebutton:
+
+volumes:
+  privatebindata:
+
+networks:
+  infrastructure_local:
+    external: true
