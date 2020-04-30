@@ -45,7 +45,26 @@ services:
       - "traefik.http.services.privatebin.loadbalancer.server.port=${PRIVATEBIN_PORT}"
     restart: unless-stopped
     
-  # projectsend:
+  projectsend:
+    image: linuxserver/projectsend
+    container_name: projectsend
+    volumes:
+      - projectsenddata:/data
+      - projectsendconfig:/config
+    networks:
+      - infrastructure_local
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.projectsend.entrypoints=http"
+      - "traefik.http.routers.projectsend.rule=Host(${PROJECTSEND_HOSTNAMES})"
+      - "traefik.http.routers.projectsend.middlewares=https-redirect@file"
+      - "traefik.http.routers.projectsend-secure.entrypoints=https"
+      - "traefik.http.routers.projectsend-secure.rule=Host(${PROJECTSEND_HOSTNAMES})"
+      - "traefik.http.routers.projectsend-secure.tls=true"
+      - "traefik.http.routers.projectsend-secure.tls.certresolver=http"
+      - "traefik.http.routers.projectsend-secure.service=projectsend"
+      - "traefik.http.services.projectsend.loadbalancer.server.port=${PROJECTSEND_PORT}"
+    restart: unless-stopped
 
   # rstudio:
 

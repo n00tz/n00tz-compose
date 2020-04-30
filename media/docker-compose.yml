@@ -270,8 +270,6 @@ volumes:
     driver_opts:
       type: tmpfs
       device: tmpfs
-      tmpfs:
-        size: 8589934592
   configradarr:
   configsonarr:
   configlidarr:
