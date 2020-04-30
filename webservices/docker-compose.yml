@@ -82,6 +82,8 @@ services:
 
 volumes:
   privatebindata:
+  projectsenddata:
+  projectsendconfig:
 
 networks:
   infrastructure_local:
