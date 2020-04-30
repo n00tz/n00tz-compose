@@ -21,12 +21,7 @@ services:
       - "80:80"     # The HTTP port
       - "443:443"   # TLS/SSL enable port
     networks:
-      - gaming_default
-      # - homeautomation_default
       - local
-      - media_default
-      - monitoring_default
-      - webservices_default
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./traefik/traefik.yml:/traefik.yml:ro
@@ -40,12 +35,7 @@ services:
     ports:
       - "25:25"
     networks:
-      - gaming_default
-      # - homeautomation_default
       - local
-      - media_default
-      - monitoring_default
-      - webservices_default
     environment:
       - RELAY_NETWORKS= :10.0.0.0/8:172.16.0.0/12:192.168.0.0/16
       - MAILNAME=${SMTP_MAILNAME}
