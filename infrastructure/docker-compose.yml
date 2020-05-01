@@ -38,7 +38,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.tcp.routers.smtp.entrypoints=smtp"
-      - "traefik.tcp.routers.smtp.rule=HostSNI(${INF_SMTP_HOSTNAMES})"
+      - "traefik.tcp.routers.smtp.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.smtp.service=smtp"
       - "traefik.tcp.routers.smtp.tls=false"
       - "traefik.tcp.services.smtp.loadbalancer.servers.port=${INF_SMTP_PORT}"
@@ -66,7 +66,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.tcp.routers.mysql.entrypoints=mysql"
-      - "traefik.tcp.routers.mysql.rule=HostSNI(${INF_MYSQL_HOSTNAMES})"
+      - "traefik.tcp.routers.mysql.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.mysql.service=mysql"
       - "traefik.tcp.routers.mysql.tls=false"
       - "traefik.tcp.services.mysql.loadbalancer.servers.port=${INF_MYSQL_PORT}"
@@ -87,7 +87,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.tcp.routers.mssql.entrypoints=mssql"
-      - "traefik.tcp.routers.mssql.rule=HostSNI(${INF_MSSQL_HOSTNAMES})"
+      - "traefik.tcp.routers.mssql.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.mssql.service=mysql"
       - "traefik.tcp.routers.mssql.tls=false"
       - "traefik.tcp.services.mssql.loadbalancer.servers.port=${INF_MSSQL_PORT}"

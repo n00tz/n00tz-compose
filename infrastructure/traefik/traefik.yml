@@ -27,8 +27,5 @@ certificatesResolvers:
       httpChallenge:
         entryPoint: http
 
-tracing:
-  serviceName: traefik
-
 metrics:
   prometheus: {}
