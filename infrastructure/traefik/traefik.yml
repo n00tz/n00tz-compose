@@ -31,5 +31,6 @@ tracing:
   serviceName: traefik
 
 metrics:
+  prometheus: {}
 
 accessLog:
