@@ -32,5 +32,3 @@ tracing:
 
 metrics:
   prometheus: {}
-
-accessLog:
