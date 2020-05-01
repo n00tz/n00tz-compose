@@ -41,7 +41,7 @@ services:
       - "traefik.tcp.routers.smtp.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.smtp.service=smtp"
       - "traefik.tcp.routers.smtp.tls=false"
-      - "traefik.tcp.services.smtp.loadbalancer.servers.port=${INF_SMTP_PORT}"
+      - "traefik.tcp.services.smtp.loadbalancer.server.port=${INF_SMTP_PORT}"
       - "traefik.tcp.services.smtp.loadbalancer.terminationdelay=100"
     networks:
       - local
@@ -69,7 +69,7 @@ services:
       - "traefik.tcp.routers.mysql.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.mysql.service=mysql"
       - "traefik.tcp.routers.mysql.tls=false"
-      - "traefik.tcp.services.mysql.loadbalancer.servers.port=${INF_MYSQL_PORT}"
+      - "traefik.tcp.services.mysql.loadbalancer.server.port=${INF_MYSQL_PORT}"
       - "traefik.tcp.services.mysql.loadbalancer.terminationdelay=100"
     volumes:
       - mysqldata:/var/lib/mysql
@@ -90,7 +90,7 @@ services:
       - "traefik.tcp.routers.mssql.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.mssql.service=mysql"
       - "traefik.tcp.routers.mssql.tls=false"
-      - "traefik.tcp.services.mssql.loadbalancer.servers.port=${INF_MSSQL_PORT}"
+      - "traefik.tcp.services.mssql.loadbalancer.server.port=${INF_MSSQL_PORT}"
       - "traefik.tcp.services.mssql.loadbalancer.terminationdelay=100"
     volumes:
       - mssqldata:/var/opt/mssql
