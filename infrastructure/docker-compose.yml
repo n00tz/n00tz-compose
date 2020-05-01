@@ -20,6 +20,9 @@ services:
     ports:
       - "80:80"     # The HTTP port
       - "443:443"   # TLS/SSL enable port
+      - "25:25"     # SMTP tcp
+      - "3306:3306" # MySQL tcp
+      - "1433:1433" # MSSQL tcp
     networks:
       - local
     volumes:
@@ -32,8 +35,12 @@ services:
   smtp:
     build: ./smtp
     container_name: smtp
-    ports:
-      - "25:25"
+    labels:
+      - "traefik.tcp.routers.smtp.entrypoints=smtp"
+      - "traefik.tcp.routers.smtp.rule=HostSNI(${INF_SMTP_HOSTNAMES})"
+      - "traefik.tcp.routers.smtp.service=mysql"
+      - "traefik.tcp.services.smtp.loadbalancer.servers.port=${INF_SMTP_PORT}"
+      - "traefik.tcp.services.smtp.loadbalancer.terminationdelay=100"
     networks:
       - local
     environment:
@@ -47,9 +54,37 @@ services:
   
   # ansible
   
-  # mysql:
+  mysql:
+    image: mariadb:10
+    container_name: mysql
+    networks:
+      - local
+    environment:
+      - MYSQL_ROOT_PASSWORD=${INF_MYSQL_ROOT_PW}
+    labels:
+      - "traefik.tcp.routers.mysql.entrypoints=mysql"
+      - "traefik.tcp.routers.mysql.rule=HostSNI(${INF_MYSQL_HOSTNAMES})"
+      - "traefik.tcp.routers.mysql.service=mysql"
+      - "traefik.tcp.services.mysql.loadbalancer.servers.port=${INF_MYSQL_PORT}"
+      - "traefik.tcp.services.mysql.loadbalancer.terminationdelay=100"
+    restart: unless-stopped
 
-  # mssql:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    container_name: mssql
+    networks:
+      - local
+    environment:
+      - SA_PASSWORD=${INF_MSSQL_SA_PW}
+      - MSSQL_PID=Developer
+      - ACCEPT_EULA=Y
+    labels:
+      - "traefik.tcp.routers.mssql.entrypoints=mssql"
+      - "traefik.tcp.routers.mssql.rule=HostSNI(${INF_MSSQL_HOSTNAMES})"
+      - "traefik.tcp.routers.mssql.service=mysql"
+      - "traefik.tcp.services.mssql.loadbalancer.servers.port=${INF_MSSQL_PORT}"
+      - "traefik.tcp.services.mssql.loadbalancer.terminationdelay=100"
+    restart: unless-stopped
 
   # redis:
 

@@ -6,6 +6,12 @@ entryPoints:
     address: ":80"
   https:
     address: ":443"
+  smtp:
+    address: ":25"
+  mysql:
+    address: ":3306"
+  mssql:
+    address: ":1433"  
   
 providers:
   docker:

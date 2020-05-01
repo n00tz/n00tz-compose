@@ -53,6 +53,11 @@ services:
       - projectsendconfig:/config
     networks:
       - infrastructure_local
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+      - MAX_UPLOAD=${PROJECTSEND_MAXUPLOAD}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.projectsend.entrypoints=http"
