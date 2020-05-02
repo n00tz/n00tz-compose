@@ -20,8 +20,8 @@ Stack includes platforms, tools, and configuration to support shared usability a
  - **Gitea**: *IN DEVELOPMENT* Git-based Source Code Repository
  - **Drone**: *ON THE BACKLOG* CI/CD Pipeline Tool
  - **Ansible AWX**: *IN DEVELOPMENT* Automation engine
- - **MySQL**: *COMING SOON* Relational DataBase Management System - Open-Source Software Flavored.
- - **MSSQL**: *COMING SOON* Relational DataBase Management System - Microsoft Flavored.
+ - **MySQL**: Relational DataBase Management System - Open-Source Software Flavored.
+ - **MSSQL**: Relational DataBase Management System - Microsoft Flavored.
  - **Redis**: *COMING SOON* In-memory data structure store, cache, message broker.
 
 ## *Media*
@@ -70,8 +70,8 @@ Stack includes images and configuration to provide monitoring and alerting servi
 Stack includes tools, applications, and APIs to provide adequate, effective, and pertinent communication or productivity.
 
  - **yopass**: Killer tool for sharing passwords securely. Code here: [github/jhaals](https://github.com/jhaals/yopass) Demo here: [LIVE VERSION](https://yopass.se)
- - **privatebin**: *ON THE BACKLOG*
- - **projectsend**: *ON THE BACKLOG*
+ - **privatebin**: Pastebin function clone for self hosting environments
+ - **projectsend**: Private File Sharing with Access Controls
  - **rstudio**: *COMING SOON*
  - **codimd**: *ON THE BACKLOG*
  - **heimdall**: *ON THE BACKLOG*
