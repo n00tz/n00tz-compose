@@ -19,6 +19,7 @@ services:
       - "--certificatesresolvers.myresolver.acme.email=${LETSENCRYPT_EMAIL}"
     ports:
       - "80:80"     # The HTTP port
+      - "8080:8080" # Traefik metrics entryPoint
       - "443:443"   # TLS/SSL enable port
       - "25:25"     # SMTP tcp
       - "3306:3306" # MySQL tcp
@@ -88,7 +89,7 @@ services:
       - "traefik.enable=true"
       - "traefik.tcp.routers.mssql.entrypoints=mssql"
       - "traefik.tcp.routers.mssql.rule=HostSNI(`*`)"
-      - "traefik.tcp.routers.mssql.service=mysql"
+      - "traefik.tcp.routers.mssql.service=mssql"
       - "traefik.tcp.routers.mssql.tls=false"
       - "traefik.tcp.services.mssql.loadbalancer.server.port=${INF_MSSQL_PORT}"
       - "traefik.tcp.services.mssql.loadbalancer.terminationdelay=100"
