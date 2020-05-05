@@ -1,33 +1,34 @@
 version: "3.7"
 services:
-  # netdata:
-  #   image: netdata/netdata
-  #   container_name: netdata
-  #   networks:
-  #     - infrastructure_local
-  #   labels:
-  #     - "traefik.enable=true"
-  #     - "traefik.http.routers.netdata.entrypoints=http"
-  #     - "traefik.http.routers.netdata.rule=Host(${NETDATA_HOSTNAMES})"
-  #     - "traefik.http.routers.netdata.middlewares=https-redirect@file"
-  #     - "traefik.http.routers.netdata-secure.entrypoints=https"
-  #     - "traefik.http.routers.netdata-secure.rule=Host(${NETDATA_HOSTNAMES})"
-  #     - "traefik.http.routers.netdata-secure.tls=true"
-  #     - "traefik.http.routers.netdata-secure.tls.certresolver=http"
-  #     - "traefik.http.routers.netdata-secure.service=netdata"
-  #     - "traefik.http.services.netdata.loadbalancer.server.port=${NETDATA_PORT}"
-  #   cap_add:
-  #     - SYS_PTRACE
-  #   security_opt:
-  #     - apparmor:unconfined
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${DOCKERGID}
-  #     - TZ=${TIMEZONE}
-  #   volumes:
-  #     - /proc:/host/proc:ro
-  #     - /sys:/host/sys:ro
-  #     - /var/run/docker.sock:/var/run/docker.sock:rw
+  netdata:
+    image: d34dc3n73r/netdata-glibc
+    container_name: netdata
+    networks:
+      - infrastructure_local
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.netdata.entrypoints=http"
+      - "traefik.http.routers.netdata.rule=Host(${NETDATA_HOSTNAMES})"
+      - "traefik.http.routers.netdata.middlewares=https-redirect@file"
+      - "traefik.http.routers.netdata-secure.entrypoints=https"
+      - "traefik.http.routers.netdata-secure.rule=Host(${NETDATA_HOSTNAMES})"
+      - "traefik.http.routers.netdata-secure.tls=true"
+      - "traefik.http.routers.netdata-secure.tls.certresolver=http"
+      - "traefik.http.routers.netdata-secure.service=netdata"
+      - "traefik.http.services.netdata.loadbalancer.server.port=${NETDATA_PORT}"
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - apparmor:unconfined
+    environment:
+      - PUID=${PUID}
+      - PGID=${DOCKERGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /usr/bin/nvidia-smi:/usr/bin/nvidia-smi
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
   portainer:
     image: portainer/portainer
