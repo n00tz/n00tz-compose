@@ -71,7 +71,23 @@ services:
       - "traefik.http.services.projectsend.loadbalancer.server.port=${PROJECTSEND_PORT}"
     restart: unless-stopped
 
-  # rstudio:
+  rstudio:
+    image: quantumobject/docker-rstudio:latest
+    container_name: MollyRStudio
+    networks:
+      - infrastructure_local
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rstudio.entrypoints=http"
+      - "traefik.http.routers.rstudio.rule=Host(${RSTUDIO_HOSTNAMES})"
+      - "traefik.http.routers.rstudio.middlewares=https-redirect@file"
+      - "traefik.http.routers.rstudio-secure.entrypoints=https"
+      - "traefik.http.routers.rstudio-secure.rule=Host(${RSTUDIO_HOSTNAMES})"
+      - "traefik.http.routers.rstudio-secure.tls=true"
+      - "traefik.http.routers.rstudio-secure.tls.certresolver=http"
+      - "traefik.http.routers.rstudio-secure.service=rstudio"
+      - "traefik.http.services.rstudio.loadbalancer.server.port=${RSTUDIO_PORT}"
+    restart: unless-stopped    
 
   # codimd:
 
