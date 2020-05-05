@@ -27,6 +27,7 @@ services:
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
+      - /usr/bin/nvidia-smi:/usr/bin/nvidia-smi
       - /var/run/docker.sock:/var/run/docker.sock:rw
 
   portainer:
