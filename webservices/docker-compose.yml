@@ -4,13 +4,14 @@ services:
     image: memcached
     container_name: yopass-memcached
     networks:
-      - infrastructure_local
+      - yopass
     restart: unless-stopped
   yopass:
     image: jhaals/yopass
     container_name: yopass
     command: "--memcached=yopass-memcached:11211"
     networks:
+      - yopass
       - infrastructure_local
     labels:
       - "traefik.enable=true"
@@ -114,3 +115,4 @@ volumes:
 networks:
   infrastructure_local:
     external: true
+  yopass:
