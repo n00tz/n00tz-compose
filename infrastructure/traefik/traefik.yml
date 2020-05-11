@@ -11,7 +11,9 @@ entryPoints:
   mysql:
     address: ":3306"
   mssql:
-    address: ":1433"  
+    address: ":1433"
+  gitssh:
+    address: ":1022"
   
 providers:
   docker:

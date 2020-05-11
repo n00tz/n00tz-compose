@@ -24,6 +24,7 @@ services:
       - "25:25"     # SMTP tcp
       - "3306:3306" # MySQL tcp
       - "1433:1433" # MSSQL tcp
+      - "1022:1022" # Git SSH tcp
     networks:
       - local
     volumes:
@@ -32,6 +33,7 @@ services:
       - ./traefik/config.yml:/config.yml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro # So that Traefik can listen to the Docker events
       - certs:/letsencrypt
+    restart: always
 
   smtp:
     build: ./smtp
@@ -51,7 +53,36 @@ services:
       - MAILNAME=${SMTP_MAILNAME}
     restart: unless-stopped
   
-  # gitea:
+  gitea:
+    image: gitea/gitea:latest
+    container_name: gitea
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.git.entrypoints=http"
+      - "traefik.http.routers.git.rule=Host(${GIT_HOSTNAMES})"
+      - "traefik.http.routers.git.middlewares=https-redirect@file"
+      - "traefik.http.routers.git-secure.entrypoints=https"
+      - "traefik.http.routers.git-secure.rule=Host(${GIT_HOSTNAMES})"
+      - "traefik.http.routers.git-secure.tls=true"
+      - "traefik.http.routers.git-secure.tls.certresolver=http"
+      - "traefik.http.routers.git-secure.service=gitea"
+      - "traefik.http.services.gitea.loadbalancer.server.port=${GIT_WEB_PORT}"
+      - "traefik.tcp.routers.git.entrypoints=gitssh"
+      - "traefik.tcp.routers.git.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.git.service=gitea"
+      - "traefik.tcp.routers.git.tls=false"
+      - "traefik.tcp.services.git.loadbalancer.server.port=${GIT_SSH_PORT}"
+      - "traefik.tcp.services.git.loadbalancer.terminationdelay=100"
+    networks:
+      - local
+    volumes:
+      - giteadata:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - USER_UID=${PUID}
+      - USER_GID=${PGID}
+    restart: unless-stopped
 
   # drone:
   
@@ -101,6 +132,7 @@ services:
 
 volumes:
   certs:
+  giteadata:
   mysqldata:
   mssqldata:
 networks:
