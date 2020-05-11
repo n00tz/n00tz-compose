@@ -17,7 +17,7 @@ Stack includes platforms, tools, and configuration to support shared usability a
 
  - **Traefik**: Web Application Proxying, Load-Balancing, and SSL Offloading.
  - **SMTP**: Simple Mail Transport Protocol
- - **Gitea**: *IN DEVELOPMENT* Git-based Source Code Repository
+ - **Gitea**: Git-based Source Code Repository
  - **Drone**: *ON THE BACKLOG* CI/CD Pipeline Tool
  - **Ansible AWX**: *IN DEVELOPMENT* Automation engine
  - **MySQL**: Relational DataBase Management System - Open-Source Software Flavored.
