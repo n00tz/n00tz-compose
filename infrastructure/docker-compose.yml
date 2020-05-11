@@ -85,9 +85,9 @@ services:
     restart: unless-stopped
 
   # drone:
-  
-  # ansible
-  
+
+  # redis:
+
   mysql:
     image: mariadb:10
     container_name: mysql
@@ -127,8 +127,6 @@ services:
     volumes:
       - mssqldata:/var/opt/mssql
     restart: unless-stopped
-
-  # redis:
 
 volumes:
   certs:
