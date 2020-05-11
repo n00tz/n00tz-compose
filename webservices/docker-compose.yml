@@ -33,6 +33,9 @@ services:
     container_name: privatebin
     volumes:
       - privatebindata:/srv/data
+      - privatebinrun:/run
+      - privatebintmp:/tmp
+      - privatebinnginxtmp:/var/lib/nginx/tmp
     networks:
       - infrastructure_local
     labels:
@@ -77,6 +80,9 @@ services:
   rstudio:
     image: rocker/rstudio:latest
     container_name: rstudio
+    volumes:
+      - rstudiolocallib:/usr/local/lib/R
+      - rstudiohome:/home/rstudio
     networks:
       - infrastructure_local
     environment:
@@ -109,8 +115,13 @@ services:
 
 volumes:
   privatebindata:
+  privatebinrun:
+  privatebintmp:
+  privatebinnginxtmp:
   projectsenddata:
   projectsendconfig:
+  rstudiolocallib:
+  rstudiohome:
 
 networks:
   infrastructure_local:
