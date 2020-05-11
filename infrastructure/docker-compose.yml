@@ -71,8 +71,8 @@ services:
       - "traefik.tcp.routers.git.rule=HostSNI(`*`)"
       - "traefik.tcp.routers.git.service=gitea"
       - "traefik.tcp.routers.git.tls=false"
-      - "traefik.tcp.services.git.loadbalancer.server.port=${GIT_SSH_PORT}"
-      - "traefik.tcp.services.git.loadbalancer.terminationdelay=100"
+      - "traefik.tcp.services.gitea.loadbalancer.server.port=${GIT_SSH_PORT}"
+      - "traefik.tcp.services.gitea.loadbalancer.terminationdelay=100"
     networks:
       - local
     volumes:
