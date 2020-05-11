@@ -72,10 +72,10 @@ Stack includes tools, applications, and APIs to provide adequate, effective, and
  - **yopass**: Killer tool for sharing passwords securely. Code here: [github/jhaals](https://github.com/jhaals/yopass) Demo here: [LIVE VERSION](https://yopass.se)
  - **privatebin**: Pastebin function clone for self hosting environments
  - **projectsend**: Private File Sharing with Access Controls
- - **rstudio**: *COMING SOON*
+ - **rstudio**: *IN PROGRESS* RStudio is an integrated development environment (IDE) for R.
  - **codimd**: *ON THE BACKLOG*
  - **heimdall**: *ON THE BACKLOG*
- - **lychee**: *ON THE BACKLOG*
+ - **lychee**: *ON THE BACKLOG* A free photo-management tool. Upload, manage and share photos like from a native application.
  - **raneto**: *ON THE BACKLOG*
  - **librespeed**: *ON THE BACKLOG*
  - **bigbluebutton**: *ON THE BACKLOG*
