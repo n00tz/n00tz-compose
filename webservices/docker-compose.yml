@@ -3,6 +3,8 @@ services:
   yopass-memcached:
     image: memcached
     container_name: yopass-memcached
+    networks:
+      - infrastructure_local
     restart: unless-stopped
   yopass:
     image: jhaals/yopass
@@ -72,15 +74,18 @@ services:
     restart: unless-stopped
 
   rstudio:
-    image: quantumobject/docker-rstudio:latest
-    container_name: MollyRStudio
+    image: rocker/rstudio:latest
+    container_name: rstudio
     networks:
       - infrastructure_local
+    environment:
+      - DISABLE_AUTH=true
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.rstudio.entrypoints=http"
       - "traefik.http.routers.rstudio.rule=Host(${RSTUDIO_HOSTNAMES})"
       - "traefik.http.routers.rstudio.middlewares=https-redirect@file"
+      - "traefik.http.routers.rstudio.middlewares=traefik-auth"
       - "traefik.http.routers.rstudio-secure.entrypoints=https"
       - "traefik.http.routers.rstudio-secure.rule=Host(${RSTUDIO_HOSTNAMES})"
       - "traefik.http.routers.rstudio-secure.tls=true"
