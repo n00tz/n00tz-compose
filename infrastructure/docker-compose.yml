@@ -56,6 +56,7 @@ services:
   awxweb:
     image: ansible/awx:latest
     container_name: awx_web
+    hostname: awxweb
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.awx.entrypoints=http"
@@ -97,6 +98,7 @@ services:
   awxtask:
     image: ansible/awx:latest
     container_name: awx_task
+    hostname: awx
     depends_on:
       - awxredis
       - awxweb
