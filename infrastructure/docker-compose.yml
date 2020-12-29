@@ -81,7 +81,7 @@ services:
       - "./awx/environment.sh:/etc/tower/conf.d/environment.sh"
       - "./awx/credentials.py:/etc/tower/conf.d/credentials.py"
       - "./awx/nginx.conf:/etc/nginx/nginx.conf:ro"
-      - awxredis-socket:/var/run/redis:rw
+      - awxredis-socket:/var/run/redis/:rw
     networks:
       - local
     environment:
@@ -112,7 +112,7 @@ services:
       - "./awx/SECRET_KEY:/etc/tower/SECRET_KEY"
       - "./awx/environment.sh:/etc/tower/conf.d/environment.sh"
       - "./awx/credentials.py:/etc/tower/conf.d/credentials.py"
-      - awxredis-socket:/var/run/redis:rw
+      - awxredis-socket:/var/run/redis/:rw
     networks:
       - local
     environment:
@@ -136,7 +136,7 @@ services:
     volumes:
       - "./awx/redis.conf:/usr/local/etc/redis/redis.conf:ro"
       - awxredis-data:/data/
-      - awxredis-socket:/var/run/redis:rw
+      - awxredis-socket:/var/run/redis/:rw
     networks:
       - local
     environment:
