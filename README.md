@@ -19,7 +19,7 @@ Stack includes platforms, tools, and configuration to support shared usability a
  - **SMTP**: Simple Mail Transport Protocol
  - **Gitea**: Git-based Source Code Repository
  - **Drone**: *ON THE BACKLOG* CI/CD Pipeline Tool
- - **Ansible AWX**: *IN DEVELOPMENT* Automation engine
+ - **Ansible AWX**: Upstream Automation Engine that runs Red Hat Ansible Tower
  - **MySQL**: Relational DataBase Management System - Open-Source Software Flavored.
  - **MSSQL**: Relational DataBase Management System - Microsoft Flavored.
  - **Redis**: *COMING SOON* In-memory data structure store, cache, message broker.
@@ -48,10 +48,10 @@ Stack includes  images and configuration to provide and support audio and video 
 
 ## *HomeAutomation*
 
- - **Hass.io**: *ON THE BACKLOG*
- - **NodeRed**: *ON THE BACKLOG*
- - **MQTT**: *ON THE BACKLOG*
- - **MDNS Repeater**: *ON THE BACKLOG*
+ - **Hass.io**: *IN DEVELOPMENT*
+ - **NodeRed**: *IN DEVELOPMENT*
+ - **MQTT**: *IN DEVELOPMENT*
+ - **MDNS Repeater**: *IN DEVELOPMENT*
 
 ## *Monitoring*
 
