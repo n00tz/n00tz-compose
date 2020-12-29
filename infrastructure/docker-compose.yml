@@ -89,8 +89,8 @@ services:
       - AWX_ADMIN_PASSWORD=${AWX_ADMIN_PASSWORD}
       - DATABASE_USER=${AWX_PG_USERNAME}
       - DATABASE_NAME=${AWX_PG_DATABASE}
-      - DATABASE_HOST='awx_postgres'
-      - DATABASE_PORT='5432'
+      - DATABASE_HOST=awx_postgres
+      - DATABASE_PORT=5432
       - DATABASE_PASSWORD=${AWX_PG_PASSWORD}
 
 
@@ -124,8 +124,8 @@ services:
       - AWX_ADMIN_PASSWORD=${AWX_ADMIN_PASSWORD}
       - DATABASE_USER=${AWX_PG_USERNAME}
       - DATABASE_NAME=${AWX_PG_DATABASE}
-      - DATABASE_HOST='awx_postgres'
-      - DATABASE_PORT='5432'
+      - DATABASE_HOST=awx_postgres
+      - DATABASE_PORT=5432
       - DATABASE_PASSWORD=${AWX_PG_PASSWORD}
   
   awxredis:
