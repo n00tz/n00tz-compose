@@ -53,6 +53,110 @@ services:
       - MAILNAME=${SMTP_MAILNAME}
     restart: unless-stopped
   
+  awxweb:
+    image: ansible/awx:latest
+    container_name: awx_web
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.awx.entrypoints=http"
+      - "traefik.http.routers.awx.rule=Host(${AWX_HOSTNAMES})"
+      - "traefik.http.routers.awx.middlewares=https-redirect@file"
+      - "traefik.http.routers.awx-secure.entrypoints=https"
+      - "traefik.http.routers.awx-secure.rule=Host(${AWX_HOSTNAMES})"
+      - "traefik.http.routers.awx-secure.tls=true"
+      - "traefik.http.routers.awx-secure.tls.certresolver=http"
+      - "traefik.http.routers.awx-secure.service=ansible"
+      - "traefik.http.services.ansible.loadbalancer.server.port=${AWX_WEB_PORT}"
+    depends_on:
+      - awxredis
+      - awxpostgres
+    user: root
+    restart: unless-stopped
+    volumes:
+      - awxsupervisor-socket:/var/run/supervisor
+      - awxrsyslog-socket:/var/run/awx-rsyslog/
+      - awxrsyslog-config:/var/lib/awx/rsyslog/
+      - "./awx/SECRET_KEY:/etc/tower/SECRET_KEY"
+      - "./awx/environment.sh:/etc/tower/conf.d/environment.sh"
+      - "./awx/credentials.py:/etc/tower/conf.d/credentials.py"
+      - "./awx/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - awxredis_socket:/var/run/redis/:rw
+    networks:
+      - local
+    environment:
+      - AWX_ADMIN_USER=${AWX_ADMIN_USER}
+      - AWX_ADMIN_PASSWORD=${AWX_ADMIN_PASSWORD}
+      - DATABASE_USER=${AWX_PG_USERNAME}
+      - DATABASE_NAME=${AWX_PG_DATABASE}
+      - DATABASE_HOST='awx_postgres'
+      - DATABASE_PORT='5432'
+      - DATABASE_PASSWORD=${AWX_PG_PASSWORD}
+
+
+  awxtask:
+    image: ansible/awx:latest
+    container_name: awx_task
+    depends_on:
+      - awxredis
+      - awxweb
+      - awxpostgres
+    command: /usr/bin/launch_awx_task.sh
+    user: root
+    restart: unless-stopped
+    volumes:
+      - awxsupervisor-socket:/var/run/supervisor
+      - awxrsyslog-socket:/var/run/awx-rsyslog/
+      - awxrsyslog-config:/var/lib/awx/rsyslog/
+      - "./awx/SECRET_KEY:/etc/tower/SECRET_KEY"
+      - "./awx/environment.sh:/etc/tower/conf.d/environment.sh"
+      - "./awx/credentials.py:/etc/tower/conf.d/credentials.py"
+      - awxredis_socket:/var/run/redis/:rw
+    networks:
+      - local
+    environment:
+      - http_proxy=''
+      - https_proxy=''
+      - no_proxy=''
+      - SUPERVISOR_WEB_CONFIG_PATH='/etc/supervisord.conf'
+      - AWX_ADMIN_USER=${AWX_ADMIN_USER}
+      - AWX_ADMIN_PASSWORD=${AWX_ADMIN_PASSWORD}
+      - DATABASE_USER=${AWX_PG_USERNAME}
+      - DATABASE_NAME=${AWX_PG_DATABASE}
+      - DATABASE_HOST='awx_postgres'
+      - DATABASE_PORT='5432'
+      - DATABASE_PASSWORD=${AWX_PG_PASSWORD}
+  
+  awxredis:
+    image: redis
+    container_name: awx_redis
+    restart: unless-stopped
+    command: ["/usr/local/etc/redis/redis.conf"]
+    volumes:
+      - "./awx/redis.conf:/usr/local/etc/redis/redis.conf:ro"
+      - awxredis_socket:/var/run/redis/:rw
+    networks:
+      - local
+    environment:
+      - http_proxy=''
+      - https_proxy=''
+      - no_proxy=''
+
+  awxpostgres:
+    image: postgres:10
+    container_name: awx_postgres
+    restart: unless-stopped
+    volumes:
+      - awxpostgres-data:/var/lib/postgresql/data:Z
+    networks:
+      - local
+    environment:
+      - POSTGRES_USER=${AWX_PG_USERNAME}
+      - POSTGRES_PASSWORD=${AWX_PG_PASSWORD}
+      - POSTGRES_DB=${AWX_PG_DATABASE}
+      - http_proxy=''
+      - https_proxy=''
+      - no_proxy=''
+
   gitea:
     image: gitea/gitea:latest
     container_name: gitea
@@ -130,6 +234,11 @@ services:
 
 volumes:
   certs:
+  awxsupervisor-socket:
+  awxrsyslog-socket:
+  awxrsyslog-config:
+  awxredis_socket:
+  awxpostgres-data:
   giteadata:
   mysqldata:
   mssqldata:
