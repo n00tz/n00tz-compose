@@ -30,6 +30,32 @@ services:
     network_mode: host
     restart: unless-stopped
 
+  beets:
+    image: linuxserver/beets:version-1.4.9
+    container_name: beets
+    networks:
+      - infrastructure_local
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.beets.entrypoints=http"
+      - "traefik.http.routers.beets.rule=Host(${BEETS_HOSTNAMES})"
+      - "traefik.http.routers.beets.middlewares=https-redirect@file"
+      - "traefik.http.routers.beets-secure.entrypoints=https"
+      - "traefik.http.routers.beets-secure.rule=Host(${BEETS_HOSTNAMES})"
+      - "traefik.http.routers.beets-secure.tls=true"
+      - "traefik.http.routers.beets-secure.tls.certresolver=http"
+      - "traefik.http.routers.beets-secure.service=beets"
+      - "traefik.http.services.beets.loadbalancer.server.port=${BEETS_PORT}"
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - /storage/audio/music_organized:/music # Music library
+      - /storage/audio/music:/downloads # Non processed music
+      - configbeets:/config # Configuration files.
+    restart: unless-stopped
+
   airsonic:
     image: airsonic/airsonic
     container_name: airsonic
@@ -51,6 +77,7 @@ services:
       - airsonicplaylists:/airsonic/playlists
       - airsonicpodcasts:/airsonic/podcasts
       - /storage/audio/music:/airsonic/music:z
+    restart: unless-stopped
     
   radarr:
     image: linuxserver/radarr
@@ -290,6 +317,7 @@ volumes:
     driver_opts:
       type: tmpfs
       device: tmpfs
+  configbeets:
   configairsonic:
   airsonicplaylists:
   airsonicpodcasts:

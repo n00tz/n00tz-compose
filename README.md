@@ -29,7 +29,8 @@ Stack includes platforms, tools, and configuration to support shared usability a
 Stack includes  images and configuration to provide and support audio and video consumption.
 
  - **Plex**: Rich personal video library manager with on the fly transcoding. [Based on the Developer Image](https://hub.docker.com/r/plexinc/pms-docker)
- - **Airsonic/Logitech SlimServer**: Personal Music Library.
+ - **Beets**: Organize the Music Library.
+ - **Airsonic**: Personal Music Library.
  - **AzuraCast**: *IN DEVELOPMENT* Web Streaming Radio
  - **Radarr**: Movie retrieval agent. [Based on LinuxServer.io Image](https://docs.linuxserver.io/images/docker-radarr)
  - **Sonarr**: TV Show retrieval agent. [Based on LinuxServer.io Image](https://docs.linuxserver.io/images/docker-sonarr)
