@@ -50,7 +50,7 @@ services:
       - configairsonic:/airsonic/data
       - airsonicplaylists:/airsonic/playlists
       - airsonicpodcasts:/airsonic/podcasts
-      - /storage/audio/music:/airsonic/music:ro
+      - /storage/audio/music:/airsonic/music:z
     
   radarr:
     image: linuxserver/radarr
