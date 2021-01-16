@@ -30,6 +30,7 @@ Stack includes  images and configuration to provide and support audio and video 
 
  - **Plex**: Rich personal video library manager with on the fly transcoding. [Based on the Developer Image](https://hub.docker.com/r/plexinc/pms-docker)
  - **Airsonic/Logitech SlimServer**: *ON THE BACKLOG* Personal Music Library.
+ - **AzuraCast**: *IN DEVELOPMENT* Web Streaming Radio
  - **Radarr**: Movie retrieval agent. [Based on LinuxServer.io Image](https://docs.linuxserver.io/images/docker-radarr)
  - **Sonarr**: TV Show retrieval agent. [Based on LinuxServer.io Image](https://docs.linuxserver.io/images/docker-sonarr)
  - **Lidarr**: Music retrieval agent. [Based on LinuxServer.io Image](https://docs.linuxserver.io/images/docker-lidarr)

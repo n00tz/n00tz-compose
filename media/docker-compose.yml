@@ -30,8 +30,28 @@ services:
     network_mode: host
     restart: unless-stopped
 
-  # airsonic:
-
+  airsonic:
+    image: airsonic/airsonic
+    container_name: airsonic
+    networks:
+      - infrastructure_local
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.airsonic.entrypoints=http"
+      - "traefik.http.routers.airsonic.rule=Host(${AIRSONIC_HOSTNAMES})"
+      - "traefik.http.routers.airsonic.middlewares=https-redirect@file"
+      - "traefik.http.routers.airsonic-secure.entrypoints=https"
+      - "traefik.http.routers.airsonic-secure.rule=Host(${AIRSONIC_HOSTNAMES})"
+      - "traefik.http.routers.airsonic-secure.tls=true"
+      - "traefik.http.routers.airsonic-secure.tls.certresolver=http"
+      - "traefik.http.routers.airsonic-secure.service=airsonic"
+      - "traefik.http.services.airsonic.loadbalancer.server.port=${AIRSONIC_PORT}"
+    volumes:
+      - airsonicdata:/airsonic/data
+      - airsonicplaylists:/airsonic/playlists
+      - airsonicpodcasts:/airsonic/podcasts
+      - /storage/audio/music:/airsonic/music:ro
+    
   radarr:
     image: linuxserver/radarr
     container_name: radarr
@@ -270,6 +290,9 @@ volumes:
     driver_opts:
       type: tmpfs
       device: tmpfs
+  configairsonic:
+  airsonicplaylists:
+  airsonicpodcasts:
   configradarr:
   configsonarr:
   configlidarr:
