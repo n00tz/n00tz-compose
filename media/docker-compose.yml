@@ -47,7 +47,7 @@ services:
       - "traefik.http.routers.airsonic-secure.service=airsonic"
       - "traefik.http.services.airsonic.loadbalancer.server.port=${AIRSONIC_PORT}"
     volumes:
-      - airsonicdata:/airsonic/data
+      - configairsonic:/airsonic/data
       - airsonicplaylists:/airsonic/playlists
       - airsonicpodcasts:/airsonic/podcasts
       - /storage/audio/music:/airsonic/music:ro
