@@ -76,7 +76,7 @@ services:
       - configairsonic:/airsonic/data
       - airsonicplaylists:/airsonic/playlists
       - airsonicpodcasts:/airsonic/podcasts
-      - /storage/audio/music:/airsonic/music:z
+      - /storage/audio/music_organized:/airsonic/music:z
     restart: unless-stopped
     
   radarr:
