@@ -17,12 +17,12 @@ Stack includes platforms, tools, and configuration to support shared usability a
 
  - **Traefik**: Web Application Proxying, Load-Balancing, and SSL Offloading.
  - **SMTP**: Simple Mail Transport Protocol
+ - **Ansible AWX**: Upstream Automation Engine that runs Red Hat Ansible Tower *COMMENTED OUT DUE TO CHANGES IN PROJECT*
  - **Gitea**: Git-based Source Code Repository
  - **Drone**: *ON THE BACKLOG* CI/CD Pipeline Tool
- - **Ansible AWX**: Upstream Automation Engine that runs Red Hat Ansible Tower
+ - **Redis**: In-memory data structure store, cache, message broker.
  - **MySQL**: Relational DataBase Management System - Open-Source Software Flavored.
  - **MSSQL**: Relational DataBase Management System - Microsoft Flavored.
- - **Redis**: *COMING SOON* In-memory data structure store, cache, message broker.
 
 ## *Media*
 
@@ -50,6 +50,8 @@ Stack includes  images and configuration to provide and support audio and video 
 
 ## *HomeAutomation*
 
+    *** Moved to separate compose project ***
+
  - **Hass.io**: *IN DEVELOPMENT*
  - **NodeRed**: *IN DEVELOPMENT*
  - **MQTT**: *IN DEVELOPMENT*
@@ -62,10 +64,11 @@ Stack includes images and configuration to provide monitoring and alerting servi
  - **NetData**: Powerful Host Metrics, Monitoring, and so much more. [Netdata Infographic](https://my-netdata.io/infographic.html)
  - **Portainer**: Dashboard for container vision and control. [Portainer Website](https://www.portainer.io/overview/)
  - **Varken**: *ON THE BACKLOG* May move to Media Stack.
- - **Grafana**: *COMING SOON*
- - **Prometheus**: *COMING SOON*
- - **CAdvisor**: *COMING SOON*
- - **Redis**: *COMING SOON*
+ - **Grafana**: Visualizing
+ - **Prometheus**: Metrics retrieval tool
+ - **Statping**: Service up/down monitoring and alerting.
+ - **CAdvisor**: Container metric capture tool *COMMENTED OUT BECAUSE IT'S A RESOURCE HOG*
+ - **Redis**: In-memory data structure store, cache, message broker for the monitoring stack.
 
 ## *Web services*
 
@@ -74,12 +77,13 @@ Stack includes tools, applications, and APIs to provide adequate, effective, and
  - **yopass**: Killer tool for sharing passwords securely. Code here: [github/jhaals](https://github.com/jhaals/yopass) Demo here: [LIVE VERSION](https://yopass.se)
  - **privatebin**: Pastebin function clone for self hosting environments
  - **projectsend**: Private File Sharing with Access Controls
- - **rstudio**: *IN PROGRESS* RStudio is an integrated development environment (IDE) for R.
+ - **rstudio**: RStudio is an integrated development environment (IDE) for R. *Commented out because it's kinda big for something that won't get used often*
  - **codimd**: *ON THE BACKLOG*
  - **heimdall**: *ON THE BACKLOG*
- - **lychee**: *ON THE BACKLOG* A free photo-management tool. Upload, manage and share photos like from a native application.
- - **raneto**: *ON THE BACKLOG*
- - **librespeed**: *ON THE BACKLOG*
+ - **lychee**: A free photo-management tool. Upload, manage and share photos like from a native application. *Commented out because it's broken last time I tried to deploy it*
+ - **hedgedoc**: Markdown friendly knowledge base platform with some really cool features like slideshow mode.
+ - **cloudbeaver**: Web RDBMS GUI
+ - **librespeed**: Self-hosted speed test
  - **bigbluebutton**: *ON THE BACKLOG*
 
 
