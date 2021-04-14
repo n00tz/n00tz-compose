@@ -77,39 +77,140 @@ services:
       - "traefik.http.services.projectsend.loadbalancer.server.port=${PROJECTSEND_PORT}"
     restart: unless-stopped
 
-  rstudio:
-    image: rocker/rstudio:latest
-    container_name: rstudio
-    volumes:
-      - rstudiolocallib:/usr/local/lib/R
-      - rstudiohome:/home/rstudio
-    networks:
-      - infrastructure_local
-    environment:
-      - DISABLE_AUTH=true
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.rstudio.entrypoints=http"
-      - "traefik.http.routers.rstudio.rule=Host(${RSTUDIO_HOSTNAMES})"
-      - "traefik.http.routers.rstudio.middlewares=https-redirect@file"
-      - "traefik.http.routers.rstudio.middlewares=traefik-auth"
-      - "traefik.http.routers.rstudio-secure.entrypoints=https"
-      - "traefik.http.routers.rstudio-secure.rule=Host(${RSTUDIO_HOSTNAMES})"
-      - "traefik.http.routers.rstudio-secure.tls=true"
-      - "traefik.http.routers.rstudio-secure.tls.certresolver=http"
-      - "traefik.http.routers.rstudio-secure.service=rstudio"
-      - "traefik.http.services.rstudio.loadbalancer.server.port=${RSTUDIO_PORT}"
-    restart: unless-stopped    
+    #  rstudio:
+    #image: rocker/rstudio:latest
+    #container_name: rstudio
+    #volumes:
+    #  - rstudiolocallib:/usr/local/lib/R
+    #  - rstudiohome:/home/rstudio
+    #networks:
+    #  - infrastructure_local
+    #environment:
+    #  - DISABLE_AUTH=true
+    #labels:
+    #  - "traefik.enable=true"
+    #  - "traefik.http.routers.rstudio.entrypoints=http"
+    #  - "traefik.http.routers.rstudio.rule=Host(${RSTUDIO_HOSTNAMES})"
+    #  - "traefik.http.routers.rstudio.middlewares=https-redirect@file"
+    #  - "traefik.http.routers.rstudio.middlewares=traefik-auth"
+    #  - "traefik.http.routers.rstudio-secure.entrypoints=https"
+    #  - "traefik.http.routers.rstudio-secure.rule=Host(${RSTUDIO_HOSTNAMES})"
+    #  - "traefik.http.routers.rstudio-secure.tls=true"
+    #  - "traefik.http.routers.rstudio-secure.tls.certresolver=http"
+    #  - "traefik.http.routers.rstudio-secure.service=rstudio"
+    #  - "traefik.http.services.rstudio.loadbalancer.server.port=${RSTUDIO_PORT}"
+    #restart: unless-stopped    
 
   # codimd:
 
   # heimdall:
 
-  # lychee:
+    #lychee:
+    #image: ghcr.io/linuxserver/lychee:latest
+    #container_name: lychee
+    #volumes:
+    #  - lycheeconf:/conf
+    #  - lycheeuploads:/pictures
+    #networks:
+    #  - infrastructure_local
+    #environment:
+    #  - TZ=${TIMEZONE}
+    #  - PUID=${PUID}
+    #  - PGID=${PGID}
+    #  #- APP_NAME=Laravel
+    #  #- APP_ENV=local
+    #  #- APP_DEBUG=true
+    #  #- LOG_CHANNEL=stack
+    #  - DB_HOST=mysql
+    #  - DB_PORT=3306
+    #  - DB_NAME=lychee
+    #  - DB_USER=lychee
+    #  - DB_PASS=${LYCHEE_MYSQL_DBPASS}
+    #labels:
+    #  - "traefik.enable=true"
+    #  - "traefik.http.routers.lychee.entrypoints=http"
+    #  - "traefik.http.routers.lychee.rule=Host(${LYCHEE_HOSTNAMES})"
+    #  - "traefik.http.routers.lychee.middlewares=https-redirect@file"
+    #  - "traefik.http.routers.lychee-secure.entrypoints=https"
+    #  - "traefik.http.routers.lychee-secure.rule=Host(${LYCHEE_HOSTNAMES})"
+    #  - "traefik.http.routers.lychee-secure.tls=true"
+    #  - "traefik.http.routers.lychee-secure.tls.certresolver=http"
+    #  - "traefik.http.routers.lychee-secure.service=lychee"
+    #  - "traefik.http.services.lychee.loadbalancer.server.port=${LYCHEE_PORT}"
+    #restart: unless-stopped
 
-  # raneto:
+  hedgedoc:
+    image: ghcr.io/linuxserver/hedgedoc:latest
+    container_name: hedgedoc
+    volumes:
+      - hedgeconfig:/config
+    networks:
+      - infrastructure_local
+    environment:
+      - DB_HOST=mysql
+      - DB_USER=hedgedoc
+      - DB_PASS=${HEDGEDOC_MYSQL_DBPASS}
+      - DB_NAME=hedgedoc
+      - DB_PORT=3306
+      - PGID=${PGID}
+      - PUID=${PUID}
+      - TZ=${TIMEZONE}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hedgedoc.entrypoints=http"
+      - "traefik.http.routers.hedgedoc.rule=Host(${HEDGEDOC_HOSTNAMES})"
+      - "traefik.http.routers.hedgedoc.middlewares=https-redirect@file"
+      - "traefik.http.routers.hedgedoc-secure.entrypoints=https"
+      - "traefik.http.routers.hedgedoc-secure.rule=Host(${HEDGEDOC_HOSTNAMES})"
+      - "traefik.http.routers.hedgedoc-secure.tls=true"
+      - "traefik.http.routers.hedgedoc-secure.tls.certresolver=http"
+      - "traefik.http.routers.hedgedoc-secure.service=hedgedoc"
+      - "traefik.http.services.hedgedoc.loadbalancer.server.port=${HEDGEDOC_PORT}"
+    restart: unless-stopped
 
-  # librespeed:
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: cloudbeaver
+    networks:
+      - infrastructure_local
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cloudbeaver.entrypoints=http"
+      - "traefik.http.routers.cloudbeaver.rule=Host(${CLOUDBEAVER_HOSTNAMES})"
+      - "traefik.http.routers.cloudbeaver.middlewares=https-redirect@file"
+      - "traefik.http.routers.cloudbeaver-secure.entrypoints=https"
+      - "traefik.http.routers.cloudbeaver-secure.rule=Host(${CLOUDBEAVER_HOSTNAMES})"
+      - "traefik.http.routers.cloudbeaver-secure.tls=true"
+      - "traefik.http.routers.cloudbeaver-secure.tls.certresolver=http"
+      - "traefik.http.routers.cloudbeaver-secure.service=cloudbeaver"
+      - "traefik.http.services.cloudbeaver.loadbalancer.server.port=${CLOUDBEAVER_PORT}"
+    volumes:
+      - dbeaverdata:/opt/cloudbeaver/workspace
+    restart: unless-stopped
+
+  speedtest:
+    image: adolfintel/speedtest
+    container_name: speedtest
+    networks:
+      - infrastructure_local
+    environment:
+      - TITLE=${SPEEDTEST_TITLE}
+      - TELEMETRY=true
+      - PASSWORD=${SPEEDTEST_PASS}
+      - EMAIL=${EMAIL}
+      - IPINFO_APIKEY=${SPEEDTEST_IPINFO_APIKEY}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.speedtest.entrypoints=http"
+      - "traefik.http.routers.speedtest.rule=Host(${SPEEDTEST_HOSTNAMES})"
+      - "traefik.http.routers.speedtest.middlewares=https-redirect@file"
+      - "traefik.http.routers.speedtest-secure.entrypoints=https"
+      - "traefik.http.routers.speedtest-secure.rule=Host(${SPEEDTEST_HOSTNAMES})"
+      - "traefik.http.routers.speedtest-secure.tls=true"
+      - "traefik.http.routers.speedtest-secure.tls.certresolver=http"
+      - "traefik.http.routers.speedtest-secure.service=speedtest"
+      - "traefik.http.services.speedtest.loadbalancer.server.port=${SPEEDTEST_PORT}"
+    restart: unless-stopped
 
   # bigbluebutton:
 
@@ -120,8 +221,10 @@ volumes:
   privatebinnginxtmp:
   projectsenddata:
   projectsendconfig:
-  rstudiolocallib:
-  rstudiohome:
+          #  rstudiolocallib:
+          #  rstudiohome:
+  dbeaverdata:
+  hedgeconfig:
 
 networks:
   infrastructure_local:

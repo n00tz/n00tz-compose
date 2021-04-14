@@ -241,8 +241,10 @@ services:
       - "traefik.http.routers.rutorrent-secure.rule=Host(${RUTORRENT_HOSTNAMES})"
       - "traefik.http.routers.rutorrent-secure.tls=true"
       - "traefik.http.routers.rutorrent-secure.tls.certresolver=http"
+      - "traefik.http.routers.rutorrent-secure.middlewares=rutorrent-auth"
       - "traefik.http.routers.rutorrent-secure.service=rutorrent"
       - "traefik.http.services.rutorrent.loadbalancer.server.port=${RUTORRENT_WEB_PORT}"
+      - "traefik.http.middlewares.rutorrent-auth.ipwhitelist.sourcerange=${LOCAL_SUBNET}"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}

@@ -51,16 +51,117 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
     
-  # grafana:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    networks:
+      - infrastructure_local
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.entrypoints=http"
+      - "traefik.http.routers.grafana.rule=Host(${GRAFANA_HOSTNAMES})"
+      - "traefik.http.routers.grafana.middlewares=https-redirect@file"
+      - "traefik.http.routers.grafana-secure.entrypoints=https"
+      - "traefik.http.routers.grafana-secure.rule=Host(${GRAFANA_HOSTNAMES})"
+      - "traefik.http.routers.grafana-secure.tls=true"
+      - "traefik.http.routers.grafana-secure.tls.certresolver=http"
+      - "traefik.http.routers.grafana-secure.service=grafana"
+      - "traefik.http.services.grafana.loadbalancer.server.port=${GRAFANA_PORT}"
+    volumes:
+      - grafanaconfig:/etc/grafana
+      - grafanahome:/usr/share/grafana
+      - grafanalogs:/var/log/grafana
+      - grafanalib:/var/lib/grafana
+    environment:
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource,grafana-piechart-panel
+    restart: unless-stopped
 
-  # prometheus:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    networks:
+      - infrastructure_local
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.prometheus.entrypoints=http"
+      - "traefik.http.routers.prometheus.rule=Host(${PROMETHEUS_HOSTNAMES})"
+      - "traefik.http.routers.prometheus.middlewares=https-redirect@file"
+      - "traefik.http.routers.prometheus-secure.entrypoints=https"
+      - "traefik.http.routers.prometheus-secure.rule=Host(${PROMETHEUS_HOSTNAMES})"
+      - "traefik.http.routers.prometheus-secure.tls=true"
+      - "traefik.http.routers.prometheus-secure.tls.certresolver=http"
+      - "traefik.http.routers.prometheus-secure.service=prometheus"
+      - "traefik.http.services.prometheus.loadbalancer.server.port=${PROMETHEUS_PORT}"
+    volumes:
+      - prometheusdata:/prometheus
+      - ./prometheus:/etc/prometheus
+    command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
+    restart: unless-stopped
 
-  # cadvisor:
+  statping:
+    image: statping/statping:latest
+    container_name: statping
+    networks:
+      - infrastructure_local
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.statping.entrypoints=http"
+      - "traefik.http.routers.statping.rule=Host(${STATPING_HOSTNAMES})"
+      - "traefik.http.routers.statping.middlewares=https-redirect@file"
+      - "traefik.http.routers.statping-secure.entrypoints=https"
+      - "traefik.http.routers.statping-secure.rule=Host(${STATPING_HOSTNAMES})"
+      - "traefik.http.routers.statping-secure.tls=true"
+      - "traefik.http.routers.statping-secure.tls.certresolver=http"
+      - "traefik.http.routers.statping-secure.service=statping"
+      - "traefik.http.services.statping.loadbalancer.server.port=${STATPING_PORT}"
+    volumes:
+      - statpingdata:/app
+    restart: unless-stopped
 
-  # redis:
+    #  cadvisor:
+    #    image: gcr.io/cadvisor/cadvisor:latest
+    #    container_name: cadvisor
+    #    networks:
+    #      - infrastructure_local
+    #    labels:
+    #      - "traefik.enable=true"
+    #      - "traefik.http.routers.cadvisor.entrypoints=http"
+    #      - "traefik.http.routers.cadvisor.rule=Host(${CADVISOR_HOSTNAMES})"
+    #      - "traefik.http.routers.cadvisor.middlewares=https-redirect@file"
+    #      - "traefik.http.routers.cadvisor-secure.entrypoints=https"
+    #      - "traefik.http.routers.cadvisor-secure.rule=Host(${CADVISOR_HOSTNAMES})"
+    #      - "traefik.http.routers.cadvisor-secure.tls=true"
+    #      - "traefik.http.routers.cadvisor-secure.tls.certresolver=http"
+    #      - "traefik.http.routers.cadvisor-secure.service=cadvisor"
+    #      - "traefik.http.services.cadvisor.loadbalancer.server.port=${CADVISOR_PORT}"
+    #    volumes:
+    #      - /:/rootfs:ro
+    #      - /var/run:/var/run:rw
+    #      - /sys:/sys:ro
+    #      - /var/lib/docker/:/var/lib/docker:ro
+    #    depends_on:
+    #      - monredis
+    #    restart: unless-stopped
+
+  monredis:
+    image: redis:latest
+    container_name: monredis
+    volumes:
+      - redisdata:/data
+    networks:
+      - infrastructure_local
+    restart: unless-stopped
+
 
 volumes:
   portainerdata:
+  prometheusdata:
+  grafanaconfig:
+  grafanahome:
+  grafanalogs:
+  grafanalib:
+  statpingdata:
+  redisdata:
 
 networks:
   infrastructure_local:

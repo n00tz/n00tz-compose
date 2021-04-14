@@ -29,5 +29,10 @@ certificatesResolvers:
       httpChallenge:
         entryPoint: http
 
+accessLog: {}
+
 metrics:
   prometheus: {}
+
+  #tracing:
+  #  jaeger: {}
