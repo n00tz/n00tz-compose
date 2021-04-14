@@ -24,9 +24,9 @@ services:
     volumes:
       - plexconfig:/config
       - plextranscode:/transcode
-      - /storage/audio:/audio
-      - /storage/video:/video
-      - /storage/photo:/photo:ro
+      - ${AUDIO_DIR}:/audio
+      - ${VIDEO_DIR}:/video
+      - ${PHOTO_DIR}:/photo:ro
     network_mode: host
     restart: unless-stopped
 
@@ -51,8 +51,8 @@ services:
       - PGID=${PGID}
       - TZ=${TIMEZONE}
     volumes:
-      - /storage/audio/music_organized:/music # Music library
-      - /storage/audio/music:/downloads # Non processed music
+      - ${AUDIO_DIR}/music_organized:/music # Music library
+      - ${AUDIO_DIR}/music:/downloads # Non processed music
       - configbeets:/config # Configuration files.
     restart: unless-stopped
 
@@ -76,7 +76,7 @@ services:
       - configairsonic:/airsonic/data
       - airsonicplaylists:/airsonic/playlists
       - airsonicpodcasts:/airsonic/podcasts
-      - /storage/audio/music_organized:/airsonic/music:z
+      - ${AUDIO_DIR}/music_organized:/airsonic/music:z
     restart: unless-stopped
     
   radarr:
