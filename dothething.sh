@@ -1,7 +1,7 @@
 #!/bin/bash
 EXC=(homeautomation exclude)
 
-LG='\033[1;32' #Light Green
+LG='\033[1;32m' #Light Green
 NC='\033[0m' #NO COLOR
 RED='\033[0;31m' #Red
 
